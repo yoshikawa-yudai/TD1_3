@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-class GameSceneBase {
+class IGameScene {
 public:
-	virtual ~GameSceneBase() = default;
+	virtual ~IGameScene() = default;
 	virtual void Update(float deltaTime, const char* keys, const char* preKeys) = 0;
 	virtual void Draw() = 0;
 

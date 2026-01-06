@@ -16,7 +16,7 @@ class SceneManager;
 /// リザルトシーン
 /// 新しい DrawComponent2D と Effect システムに対応
 /// </summary>
-class ResultScene : public GameSceneBase {
+class ResultScene : public IGameScene {
 public:
 	ResultScene(SceneManager& mgr, GameShared& shared);
 	~ResultScene();

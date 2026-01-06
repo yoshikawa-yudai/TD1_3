@@ -44,9 +44,6 @@
     <Filter Include="KamataEngine\Source\library\2D\Ui">
       <UniqueIdentifier>{8814f3eb-efd8-456a-b1fd-0c8fa783aa14}</UniqueIdentifier>
     </Filter>
-    <Filter Include="KamataEngine\Source\library\pad">
-      <UniqueIdentifier>{e93fcc20-cc52-41b8-b2b8-d887a382def4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="KamataEngine\Source\Game">
       <UniqueIdentifier>{c35711af-6d06-4cd8-98c8-09bcd4acbe86}</UniqueIdentifier>
     </Filter>
@@ -119,14 +116,20 @@
     <Filter Include="KamataEngine\Source\library\2D\Component\ComponentBase">
       <UniqueIdentifier>{3320bfb2-b5b7-457f-bda5-fbcb05a39150}</UniqueIdentifier>
     </Filter>
-    <Filter Include="KamataEngine\Source\library\InputManager">
-      <UniqueIdentifier>{2f2c72dd-2908-45bc-8ec8-f3ffd4fef0e0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="KamataEngine\Source\library\SoundManager">
       <UniqueIdentifier>{3d9f9343-17ca-4970-b470-6034ecfcccaf}</UniqueIdentifier>
     </Filter>
     <Filter Include="KamataEngine\Source\library\TextureManager">
       <UniqueIdentifier>{ce12d583-8519-43e2-94ff-1ebde022a8d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KamataEngine\Source\library\Input">
+      <UniqueIdentifier>{ea616e77-070f-4991-a9cb-837d3d470cd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KamataEngine\Source\library\Input\pad">
+      <UniqueIdentifier>{e93fcc20-cc52-41b8-b2b8-d887a382def4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KamataEngine\Source\library\Input\InputManager">
+      <UniqueIdentifier>{2f2c72dd-2908-45bc-8ec8-f3ffd4fef0e0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -135,7 +138,7 @@
       <Filter>KamataEngine\Adapter</Filter>
     </ClCompile>
     <ClCompile Include="Pad.cpp">
-      <Filter>KamataEngine\Source\library\pad</Filter>
+      <Filter>KamataEngine\Source\library\Input\pad</Filter>
     </ClCompile>
     <ClCompile Include="FontAtlas.cpp">
       <Filter>KamataEngine\Source\library\Font</Filter>
@@ -231,7 +234,7 @@
       <Filter>KamataEngine\Source\library\2D\Component\ComponentBase</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
-      <Filter>KamataEngine\Source\library\InputManager</Filter>
+      <Filter>KamataEngine\Source\library\Input\InputManager</Filter>
     </ClCompile>
     <ClCompile Include="SoundManager.cpp">
       <Filter>KamataEngine\Source\library\SoundManager</Filter>
@@ -326,7 +329,7 @@
       <Filter>KamataEngine\Source\Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Pad.h">
-      <Filter>KamataEngine\Source\library\pad</Filter>
+      <Filter>KamataEngine\Source\library\Input\pad</Filter>
     </ClInclude>
     <ClInclude Include="SceneType.h">
       <Filter>KamataEngine\Source\Game\Scene</Filter>
@@ -449,7 +452,7 @@
       <Filter>KamataEngine\Source\library\2D\Object</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
-      <Filter>KamataEngine\Source\library\InputManager</Filter>
+      <Filter>KamataEngine\Source\library\Input\InputManager</Filter>
     </ClInclude>
     <ClInclude Include="SoundManager.h">
       <Filter>KamataEngine\Source\library\SoundManager</Filter>

@@ -14,7 +14,7 @@ class SceneManager;
 /// <summary>
 /// ステージセレクトシーン
 /// </summary>
-class StageSelectScene : public GameSceneBase {
+class StageSelectScene : public IGameScene {
 public:
 	//StageSelectScene(SceneManager& manager, GameShared& shared);
 	StageSelectScene(SceneManager& manager);

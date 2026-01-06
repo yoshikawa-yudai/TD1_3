@@ -8,7 +8,7 @@
 
 class SceneManager;
 
-class SettingScene : public GameSceneBase {
+class SettingScene : public IGameScene {
 public:
 
 	enum class Item {

@@ -11,7 +11,7 @@ class GameShared;
 class SceneManager;
 
 
-class TitleScene : public GameSceneBase {
+class TitleScene : public IGameScene {
 public:
 	TitleScene(SceneManager& manager);
 

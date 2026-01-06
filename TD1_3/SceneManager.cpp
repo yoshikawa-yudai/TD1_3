@@ -89,7 +89,7 @@ void SceneManager::RequestResult(int stageIndex, int score) {
 	RequestTransition(SceneType::Result);
 }
 
-void SceneManager::PushOverlay(std::unique_ptr<GameSceneBase> overlay) {
+void SceneManager::PushOverlay(std::unique_ptr<IGameScene> overlay) {
 	overlayScenes_.push_back(std::move(overlay));
 }
 
