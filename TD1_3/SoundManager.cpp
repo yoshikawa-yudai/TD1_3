@@ -1,6 +1,6 @@
-﻿#include "AudioManager.h"
+﻿#include "SoundManager.h"
 
-AudioManager::AudioManager() {
+SoundManager::SoundManager() {
 	// 全てのリソースを初期化（-1は無効値）
 	bgmResources_.fill(-1);
 	seResources_.fill(-1);
@@ -8,7 +8,7 @@ AudioManager::AudioManager() {
 	LoadResources();
 }
 
-void AudioManager::LoadResources() {
+void SoundManager::LoadResources() {
 	// ========================================
 	// BGMのロード
 	// ========================================
@@ -27,7 +27,7 @@ void AudioManager::LoadResources() {
 	seResources_[static_cast<int>(SeId::PlayerShot)] = Novice::LoadAudio("./Resources/sounds/SE/playerShot.mp3");
 }
 
-void AudioManager::PlayBgm(BgmId id, bool loop) {
+void SoundManager::PlayBgm(BgmId id, bool loop) {
 	// 既に同じ曲が流れているなら何もしない（音量更新だけ念の為行う）
 	if (currentBgmId_ == id && Novice::IsPlayingAudio(currentBgmPlayHandle_)) {
 		Novice::SetAudioVolume(currentBgmPlayHandle_, bgmVolume_);
@@ -45,22 +45,22 @@ void AudioManager::PlayBgm(BgmId id, bool loop) {
 	}
 }
 
-void AudioManager::StopBgm() {
+void SoundManager::StopBgm() {
 	if (currentBgmPlayHandle_ != -1 && Novice::IsPlayingAudio(currentBgmPlayHandle_)) {
 		Novice::StopAudio(currentBgmPlayHandle_);
 	}
 	currentBgmPlayHandle_ = -1;
-	currentBgmId_ = BgmId::Count; // 「何も再生していない」状態
+	currentBgmId_ = BgmId::None; // 「何も再生していない」状態
 }
 
-void AudioManager::PlaySe(SeId id) {
+void SoundManager::PlaySe(SeId id) {
 	int resourceHandle = seResources_[static_cast<int>(id)];
 	if (resourceHandle != -1) {
 		Novice::PlayAudio(resourceHandle, false, seVolume_);
 	}
 }
 
-void AudioManager::SetBgmVolume(float volume) {
+void SoundManager::SetBgmVolume(float volume) {
 	bgmVolume_ = volume;
 
 	// 現在再生中のBGMがあれば、即座に音量を反映させる
@@ -69,7 +69,7 @@ void AudioManager::SetBgmVolume(float volume) {
 	}
 }
 
-void AudioManager::SetSeVolume(float volume) {
+void SoundManager::SetSeVolume(float volume) {
 	seVolume_ = volume;
 	// SEは鳴りっぱなしのものは少ないので、次回の再生から反映でOK
 	// もしループ再生する環境音SEなどがある場合は、個別のハンドル管理が必要

@@ -9,6 +9,8 @@ enum class BgmId {
 	StageSelect,
 	Stage,
 	Result,
+
+	None, // BGMなし指定用
 	Count // 総数カウント用
 };
 
@@ -20,15 +22,18 @@ enum class SeId {
 	Pause,
 	PlayerShot,
 
-
-
 	// 必要な分だけここに追加
 	Count // 総数カウント用
 };
 
-class AudioManager {
+class SoundManager {
 public:
-	AudioManager();
+	SoundManager();
+
+	static SoundManager& GetInstance() {
+		static SoundManager instance;
+		return instance;
+	}
 
 	// ==========================================
 	// 再生制御
@@ -54,7 +59,6 @@ public:
 	// ==========================================
 	// 音量設定（設定画面用）
 	// ==========================================
-
 	void SetBgmVolume(float volume);
 	float GetBgmVolume() const { return bgmVolume_; }
 

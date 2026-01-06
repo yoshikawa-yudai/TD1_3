@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <Novice.h>
 #include "Vector2.h"
-#include "Pad.h"     // 既存のPadクラスを統合
+#include "Pad.h"
 
 // マウスボタンのエイリアス（マジックナンバー防止）
 enum class MouseButton {
@@ -20,6 +20,12 @@ class InputManager {
 public:
 	// コンストラクタ
 	InputManager();
+	~InputManager() = default;
+
+	static InputManager& GetInstance() {
+		static InputManager instance;
+		return instance;
+	}
 
 	// 毎フレーム呼ぶ更新処理
 	void Update();

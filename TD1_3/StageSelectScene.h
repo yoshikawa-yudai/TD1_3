@@ -16,7 +16,8 @@ class SceneManager;
 /// </summary>
 class StageSelectScene : public GameSceneBase {
 public:
-	StageSelectScene(SceneManager& manager, GameShared& shared);
+	//StageSelectScene(SceneManager& manager, GameShared& shared);
+	StageSelectScene(SceneManager& manager);
 	~StageSelectScene();
 
 	void Update(float dt, const char* keys, const char* pre) override;
@@ -24,7 +25,7 @@ public:
 
 private:
 	SceneManager& manager_;
-	GameShared& shared_;
+	//GameShared& shared_;
 
 	// ========== ボタン管理 ==========
 	ButtonManager buttonManager_;

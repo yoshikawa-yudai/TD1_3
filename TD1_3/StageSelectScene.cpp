@@ -3,12 +3,39 @@
 #include "SceneType.h"
 #include <Novice.h>
 
+#include "SoundManager.h"
+#include "InputManager.h"
+#include "TextureManager.h"
+
 #ifdef _DEBUG
 #include <imgui.h>
 #endif
 
-StageSelectScene::StageSelectScene(SceneManager& manager, GameShared& shared)
-	: manager_(manager), shared_(shared) {
+//StageSelectScene::StageSelectScene(SceneManager& manager, GameShared& shared)
+//	: manager_(manager), shared_(shared) {
+//
+//	// フォント読み込み
+//	if (font_.Load("Resources/font/oxanium.fnt", "./Resources/font/oxanium_0.png")) {
+//		text_.SetFont(&font_);
+//		fontReady_ = true;
+//	}
+//
+//	// 描画コンポーネント初期化
+//	InitializeDrawComponents();
+//
+//	// ボタン初期化
+//	InitializeButtons();
+//
+//	// BGMを再生
+//	shared_.PlayExclusive_(BgmKind::Title);
+//
+//	// 入力遅延タイマーを設定
+//	inputDelayTimer_ = kInputDelay_;
+//	inputEnabled_ = false;
+//}
+
+StageSelectScene::StageSelectScene(SceneManager& manager)
+	: manager_(manager){
 
 	// フォント読み込み
 	if (font_.Load("Resources/font/oxanium.fnt", "./Resources/font/oxanium_0.png")) {
@@ -23,7 +50,7 @@ StageSelectScene::StageSelectScene(SceneManager& manager, GameShared& shared)
 	InitializeButtons();
 
 	// BGMを再生
-	shared_.PlayExclusive_(BgmKind::Title);
+	SoundManager::GetInstance().PlayBgm(BgmId::None);
 
 	// 入力遅延タイマーを設定
 	inputDelayTimer_ = kInputDelay_;
@@ -52,7 +79,7 @@ void StageSelectScene::InitializeDrawComponents() {
 
 void StageSelectScene::InitializeButtons() {
 	// ボタン用の白いテクスチャ
-	grHandleButton_ = shared_.texWhite;
+	grHandleButton_ = TextureManager::GetInstance().GetTexture(TextureId::White1x1);
 
 	// ボタンの位置とサイズ
 	const float centerX = 640.0f;
@@ -64,19 +91,19 @@ void StageSelectScene::InitializeButtons() {
 
 	// ステージ1へ遷移
 	auto goToStage1 = [&]() {
-		shared_.lastPlayedStageIndex = 0;
+		//shared_.lastPlayedStageIndex = 0;
 		manager_.RequestStage(1);
 		};
 
 	// ゲームプレイシーン（テスト用）
 	auto goToGamePlay = [&]() {
-		shared_.lastPlayedStageIndex = 0;
+		//shared_.lastPlayedStageIndex = 0;
 		manager_.RequestTransition(SceneType::GamePlay);
 		};
 
 	// タイトルに戻る
 	auto backToTitle = [&]() {
-		shared_.PlayBackSe();
+		SoundManager::GetInstance().PlaySe(SeId::Decide);
 		manager_.RequestTransition(SceneType::Title);
 		};
 
@@ -106,11 +133,11 @@ void StageSelectScene::InitializeButtons() {
 	// ========== SE設定 ==========
 
 	buttonManager_.SetOnSelectSound([&]() {
-		shared_.PlaySelectSe();
+		SoundManager::GetInstance().PlaySe(SeId::Select);
 		});
 
 	buttonManager_.SetOnDecideSound([&]() {
-		shared_.PlayDecideSe();
+		SoundManager::GetInstance().PlaySe(SeId::Decide);
 		});
 
 	// 初期選択をリセット
@@ -138,11 +165,11 @@ void StageSelectScene::Update(float dt, const char* keys, const char* pre) {
 	// 入力が有効な場合のみ処理
 	if (inputEnabled_) {
 		// ボタンマネージャーの更新
-		buttonManager_.Update(dt, keys, pre, shared_.pad);
+		buttonManager_.Update(dt, keys, pre, *InputManager::GetInstance().GetPad());
 
 		// Escapeキーで戻る
 		if (!pre[DIK_ESCAPE] && keys[DIK_ESCAPE]) {
-			shared_.PlayBackSe();
+			SoundManager::GetInstance().PlaySe(SeId::Back);
 			manager_.RequestTransition(SceneType::Title);
 		}
 	}

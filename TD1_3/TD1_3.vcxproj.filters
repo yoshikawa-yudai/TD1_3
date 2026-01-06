@@ -119,20 +119,14 @@
     <Filter Include="KamataEngine\Source\library\2D\Component\ComponentBase">
       <UniqueIdentifier>{3320bfb2-b5b7-457f-bda5-fbcb05a39150}</UniqueIdentifier>
     </Filter>
-    <Filter Include="KamataEngine\Source\Game\Scene\NightSky">
-      <UniqueIdentifier>{82002ce7-e9bf-46ad-9d90-17a4f1a83965}</UniqueIdentifier>
+    <Filter Include="KamataEngine\Source\library\InputManager">
+      <UniqueIdentifier>{2f2c72dd-2908-45bc-8ec8-f3ffd4fef0e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="KamataEngine\Source\Shared\Audio">
-      <UniqueIdentifier>{ba8fd610-1a56-41a2-af57-9f1aff346022}</UniqueIdentifier>
+    <Filter Include="KamataEngine\Source\library\SoundManager">
+      <UniqueIdentifier>{3d9f9343-17ca-4970-b470-6034ecfcccaf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="KamataEngine\Source\Shared\Input">
-      <UniqueIdentifier>{cc040a39-70d8-4b4c-9de6-6c02cb1c4f7b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="KamataEngine\Source\Game\Scene\NightSky\Fish">
-      <UniqueIdentifier>{4523e883-cf42-41c4-bedd-1bc337a44e40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="KamataEngine\Source\Game\Scene\CyberOverdrive">
-      <UniqueIdentifier>{d40d8be3-0477-428c-ab75-5346cb87b85d}</UniqueIdentifier>
+    <Filter Include="KamataEngine\Source\library\TextureManager">
+      <UniqueIdentifier>{ce12d583-8519-43e2-94ff-1ebde022a8d3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -236,26 +230,14 @@
     <ClCompile Include="ComponentBase.cpp">
       <Filter>KamataEngine\Source\library\2D\Component\ComponentBase</Filter>
     </ClCompile>
-    <ClCompile Include="NightSkyScene.cpp">
-      <Filter>KamataEngine\Source\Game\Scene\NightSky</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioManager.cpp">
-      <Filter>KamataEngine\Source\Shared\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="InputManager.cpp">
-      <Filter>KamataEngine\Source\Shared\Input</Filter>
+      <Filter>KamataEngine\Source\library\InputManager</Filter>
     </ClCompile>
-    <ClCompile Include="Fish.cpp">
-      <Filter>KamataEngine\Source\Game\Scene\NightSky\Fish</Filter>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>KamataEngine\Source\library\SoundManager</Filter>
     </ClCompile>
-    <ClCompile Include="FishScene.cpp">
-      <Filter>KamataEngine\Source\Game\Scene\NightSky\Fish</Filter>
-    </ClCompile>
-    <ClCompile Include="AtomicBarrirScene.cpp">
-      <Filter>KamataEngine\Source\Game\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="CyberOverdrive.cpp">
-      <Filter>KamataEngine\Source\Game\Scene\CyberOverdrive</Filter>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>KamataEngine\Source\library\TextureManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -466,26 +448,14 @@
     <ClInclude Include="Transform2D.h">
       <Filter>KamataEngine\Source\library\2D\Object</Filter>
     </ClInclude>
-    <ClInclude Include="NightSkyScene.h">
-      <Filter>KamataEngine\Source\Game\Scene\NightSky</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioManager.h">
-      <Filter>KamataEngine\Source\Shared\Audio</Filter>
-    </ClInclude>
     <ClInclude Include="InputManager.h">
-      <Filter>KamataEngine\Source\Shared\Input</Filter>
+      <Filter>KamataEngine\Source\library\InputManager</Filter>
     </ClInclude>
-    <ClInclude Include="Fish.h">
-      <Filter>KamataEngine\Source\Game\Scene\NightSky\Fish</Filter>
+    <ClInclude Include="SoundManager.h">
+      <Filter>KamataEngine\Source\library\SoundManager</Filter>
     </ClInclude>
-    <ClInclude Include="FishScene.h">
-      <Filter>KamataEngine\Source\Game\Scene\NightSky\Fish</Filter>
-    </ClInclude>
-    <ClInclude Include="AtomicBarrirScene.h">
-      <Filter>KamataEngine\Source\Game\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="CyberOverdrive.h">
-      <Filter>KamataEngine\Source\Game\Scene\CyberOverdrive</Filter>
+    <ClInclude Include="TextureManager.h">
+      <Filter>KamataEngine\Source\library\TextureManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

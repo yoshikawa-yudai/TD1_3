@@ -7,6 +7,10 @@
 
 #include "SceneManager.h"
 
+#include "SoundManager.h"
+#include "InputManager.h"
+#include "TextureManager.h"
+
 const char kWindowTitle[] = "LC1A_30_ムラセ_トモキ";
 
 // Windowsアプリでのエントリーポイント(main関数)
@@ -20,6 +24,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	SceneManager sceneManager;
 
 	//Novice::SetWindowMode(kFullscreen);
+
+	SoundManager audioManager;
+	InputManager inputManager;
+	TextureManager textureManager;
 
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };
@@ -37,6 +45,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓更新処理ここから
 		///
+
 
 		sceneManager.Update(kDeltaTime, keys, preKeys);
 

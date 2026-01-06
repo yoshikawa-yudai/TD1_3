@@ -4,10 +4,6 @@
 #include "SettingScene.h"
 #include "PauseScene.h"
 #include "ResultScene.h"
-#include "NightSkyScene.h"
-#include "AtomicBarrirScene.h"
-#include "CyberOverdrive.h"
-
 #include "GamePlayScene.h"
 #include "Stage1Scene.h"
 
@@ -117,12 +113,12 @@ void SceneManager::ChangeScene(SceneType type) {
 
 	switch (type) {
 	case SceneType::Title:
-		currentScene_ = std::make_unique<TitleScene>(*this, shared_);
+		currentScene_ = std::make_unique<TitleScene>(*this);
 		currentStageIndex_ = -1;
 		break;
 
 	case SceneType::StageSelect:
-		currentScene_ = std::make_unique<StageSelectScene>(*this, shared_);
+		currentScene_ = std::make_unique<StageSelectScene>(*this);
 		currentStageIndex_ = -1;
 		break;
 
@@ -143,21 +139,10 @@ void SceneManager::ChangeScene(SceneType type) {
 		currentScene_ = std::make_unique<GamePlayScene>(*this, shared_);
 		break;
 
-	case SceneType::NightSky:
-		currentScene_ = std::make_unique<NightSkyScene>(*this);
-		break;
-	case SceneType::AtomicBarrier:
-		currentScene_ = std::make_unique<AtomicBarrierScene>(*this);
-		break;
-
-	case SceneType::CyberOverdrive:
-		currentScene_ = std::make_unique<CyberOverdrive>(*this, shared_);
-		break;
-
 	default:
 		// 未実装のシーンの場合はタイトルに戻る
 		if (type != SceneType::Title) {
-			currentScene_ = std::make_unique<TitleScene>(*this, shared_);
+			currentScene_ = std::make_unique<TitleScene>(*this);
 			currentSceneType_ = SceneType::Title;
 			currentStageIndex_ = -1;
 		}

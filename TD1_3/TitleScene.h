@@ -13,7 +13,7 @@ class SceneManager;
 
 class TitleScene : public GameSceneBase {
 public:
-	explicit TitleScene(SceneManager& manager, GameShared& shared);
+	TitleScene(SceneManager& manager);
 
 	void Update(float deltaTime, const char* keys, const char* preKeys) override;
 	void Draw() override;
@@ -21,8 +21,8 @@ public:
 	void SetButtonTexture(int textureHandle) { grHandleButton_ = textureHandle; }
 
 private:
-	SceneManager& manager_;
-	GameShared& shared_;
+	SceneManager& sceneManager_;
+//	GameShared& shared_;
 
 	// ボタンマネージャー
 	ButtonManager buttonManager_;

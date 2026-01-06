@@ -111,8 +111,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
   <ItemGroup>
     <ClCompile Include="Affine2D.cpp" />
     <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="AtomicBarrirScene.cpp" />
-    <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="BaseStageScene.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -120,19 +119,15 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp" />
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="ComponentBase.cpp" />
-    <ClCompile Include="CyberOverdrive.cpp" />
     <ClCompile Include="DebugWindow.cpp" />
     <ClCompile Include="DrawComponent2D.cpp" />
     <ClCompile Include="Effect.cpp" />
-    <ClCompile Include="Fish.cpp" />
-    <ClCompile Include="FishScene.cpp" />
     <ClCompile Include="FontAtlas.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
     <ClCompile Include="GameShared.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix3x3.cpp" />
-    <ClCompile Include="NightSkyScene.cpp" />
     <ClCompile Include="Object2D.cpp" />
     <ClCompile Include="Pad.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -145,6 +140,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="Stage1Scene.cpp" />
     <ClCompile Include="StageSelectScene.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UiDrawComponent.cpp" />
     <ClCompile Include="Vector2.cpp" />
@@ -155,8 +151,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="..\DirectXGame\3d\Camera.h" />
     <ClInclude Include="Affine2D.h" />
     <ClInclude Include="Animation.h" />
-    <ClInclude Include="AtomicBarrirScene.h" />
-    <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="BaseStageScene.h" />
     <ClInclude Include="Button.h" />
@@ -189,13 +184,10 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="ComponentBase.h" />
-    <ClInclude Include="CyberOverdrive.h" />
     <ClInclude Include="DebugWindow.h" />
     <ClInclude Include="DrawComponent2D.h" />
     <ClInclude Include="Easing.h" />
     <ClInclude Include="Effect.h" />
-    <ClInclude Include="Fish.h" />
-    <ClInclude Include="FishScene.h" />
     <ClInclude Include="FontAtlas.h" />
     <ClInclude Include="GamePlayScene.h" />
     <ClInclude Include="GameSceneBase.h" />
@@ -204,7 +196,6 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonUtil.h" />
     <ClInclude Include="Matrix3x3.h" />
-    <ClInclude Include="NightSkyScene.h" />
     <ClInclude Include="Object2D.h" />
     <ClInclude Include="Pad.h" />
     <ClInclude Include="Particle.h" />
@@ -220,6 +211,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="Stage1Scene.h" />
     <ClInclude Include="StageSelectScene.h" />
     <ClInclude Include="TextRenderer.h" />
+    <ClInclude Include="TextureManager.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Transform2D.h" />
     <ClInclude Include="UiDrawComponent.h" />

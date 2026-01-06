@@ -4,16 +4,37 @@
 #include <Novice.h>
 #include <cstring>
 #include <algorithm>
-#include "WindowSize.h"
+
 #include "SceneManager.h"
+#include "SoundManager.h"
+#include "InputManager.h"
 
 #ifdef _DEBUG
 #include <imgui.h>
 #endif
 
-TitleScene::TitleScene(SceneManager& manager, GameShared& shared)
-	: manager_(manager),
-	shared_(shared) {
+//TitleScene::TitleScene(SceneManager& manager, GameShared& shared)
+//	: manager_(manager),
+//	shared_(shared) {
+//
+//	// フォント読み込み
+//	if (font_.Load("Resources/font/oxanium.fnt", "./Resources/font/oxanium_0.png")) {
+//		text_.SetFont(&font_);
+//		fontReady_ = true;
+//	}
+//
+//	// 描画コンポーネントを初期化
+//	InitializeDrawComponents();
+//
+//	// ボタン初期化
+//	InitializeButtons();
+//
+//	// BGMを再生
+//	shared_.PlayExclusive_(BgmKind::Title);
+//}
+
+TitleScene::TitleScene(SceneManager& manager)
+	: sceneManager_(manager){
 
 	// フォント読み込み
 	if (font_.Load("Resources/font/oxanium.fnt", "./Resources/font/oxanium_0.png")) {
@@ -28,7 +49,7 @@ TitleScene::TitleScene(SceneManager& manager, GameShared& shared)
 	InitializeButtons();
 
 	// BGMを再生
-	shared_.PlayExclusive_(BgmKind::Title);
+	SoundManager::GetInstance().PlayBgm(BgmId::Title);
 }
 
 void TitleScene::InitializeDrawComponents() {
@@ -59,7 +80,7 @@ void TitleScene::InitializeDrawComponents() {
 
 void TitleScene::InitializeButtons() {
 	// ボタン用の白いテクスチャ
-	grHandleButton_ = shared_.texWhite;
+	//grHandleButton_ = shared_.texWhite;
 
 	// ボタンの位置とサイズ
 	const float centerX = 1080.0f;
@@ -69,15 +90,15 @@ void TitleScene::InitializeButtons() {
 
 	// ボタンのコールバック
 	auto goToStageSelect = [&]() {
-		manager_.RequestTransition(SceneType::StageSelect);
+		sceneManager_.RequestTransition(SceneType::StageSelect);
 		};
 
 	auto goToSettings = [&]() {
-		manager_.RequestOpenSettings();
+		sceneManager_.RequestOpenSettings();
 		};
 
 	auto quitGame = [&]() {
-		manager_.RequestQuit();
+		sceneManager_.RequestQuit();
 		};
 
 	// 3つのボタンを追加
@@ -102,11 +123,11 @@ void TitleScene::InitializeButtons() {
 
 	// SE設定
 	buttonManager_.SetOnSelectSound([&]() {
-		shared_.PlaySelectSe();
+		SoundManager::GetInstance().PlaySe(SeId::PlayerShot);
 		});
 
 	buttonManager_.SetOnDecideSound([&]() {
-		shared_.PlayDecideSe();
+		SoundManager::GetInstance().PlaySe(SeId::PlayerShot);
 		});
 
 	// 初期選択をリセット
@@ -123,8 +144,12 @@ void TitleScene::Update(float dt, const char* keys, const char* pre) {
 	// 描画コンポーネントを更新
 	UpdateDrawComponents(dt);
 
+	if (keys[DIK_I] && !pre[DIK_I]) {
+		SoundManager::GetInstance().PlaySe(SeId::Decide);
+	}
+	
 	// ボタンマネージャーを更新
-	buttonManager_.Update(dt, keys, pre, shared_.pad);
+	buttonManager_.Update(dt, keys, pre, *InputManager::GetInstance().GetPad());
 }
 
 void TitleScene::Draw() {

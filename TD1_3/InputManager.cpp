@@ -28,15 +28,12 @@ void InputManager::Update() {
 		currMouseBtn_[i] = Novice::IsPressMouse(i);
 	}
 
-
 	// 移動量（Delta）の計算
 	mouseDelta_.x = mousePos_.x - preMousePos_.x;
 	mouseDelta_.y = mousePos_.y - preMousePos_.y;
 	preMousePos_ = mousePos_;
 
-	// ホイール更新（Novice::GetWheelはフレームごとの変位ではなく現在値を返す仕様の場合の対応）
-	// ※Noviceの仕様によりますが、一般的に変位を取得するには差分を取るか、そのまま使うか確認が必要です。
-	// ここではNovice::GetWheel()が「そのフレームの回転量」を返すと仮定して実装します。
+	// ホイール更新
 	wheel_ = Novice::GetWheel();
 
 	// 3. パッド更新
