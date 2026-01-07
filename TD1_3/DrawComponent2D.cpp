@@ -43,9 +43,7 @@ DrawComponent2D::DrawComponent2D(const DrawComponent2D& other)
 	: graphHandle_(other.graphHandle_)
 	, imageSize_(other.imageSize_)
 	, drawSize_(other.drawSize_)
-	, position_(other.position_)
-	, scale_(other.scale_)
-	, rotation_(other.rotation_)
+	, transform_(other.transform_)
 	, anchorPoint_(other.anchorPoint_)
 	, baseColor_(other.baseColor_)
 	, flipX_(other.flipX_)
@@ -62,9 +60,7 @@ DrawComponent2D::DrawComponent2D(DrawComponent2D&& other) noexcept
 	: graphHandle_(other.graphHandle_)
 	, imageSize_(other.imageSize_)
 	, drawSize_(other.drawSize_)
-	, position_(other.position_)
-	, scale_(other.scale_)
-	, rotation_(other.rotation_)
+	, transform_(other.transform_)
 	, anchorPoint_(other.anchorPoint_)
 	, baseColor_(other.baseColor_)
 	, flipX_(other.flipX_)
@@ -79,9 +75,7 @@ DrawComponent2D& DrawComponent2D::operator=(const DrawComponent2D& other) {
 		graphHandle_ = other.graphHandle_;
 		imageSize_ = other.imageSize_;
 		drawSize_ = other.drawSize_;
-		position_ = other.position_;
-		scale_ = other.scale_;
-		rotation_ = other.rotation_;
+		transform_ = other.transform_;
 		anchorPoint_ = other.anchorPoint_;
 		baseColor_ = other.baseColor_;
 		flipX_ = other.flipX_;
@@ -104,9 +98,7 @@ DrawComponent2D& DrawComponent2D::operator=(DrawComponent2D&& other) noexcept {
 		graphHandle_ = other.graphHandle_;
 		imageSize_ = other.imageSize_;
 		drawSize_ = other.drawSize_;
-		position_ = other.position_;
-		scale_ = other.scale_;
-		rotation_ = other.rotation_;
+		transform_ = other.transform_;
 		anchorPoint_ = other.anchorPoint_;
 		baseColor_ = other.baseColor_;
 		flipX_ = other.flipX_;
@@ -172,13 +164,13 @@ void DrawComponent2D::Draw(const Camera2D& camera) {
 	// カメラのY軸反転設定を確認してスケールを調整
 	if (camera.IsInvertY()) {
 		// Y軸反転が有効な場合、スケールのY成分を反転
-		Vector2 originalScale = scale_;
-		scale_.y *= -1.0f;
+		Vector2 originalScale = transform_.scale;
+		transform_.scale.y *= -1.0f;
 
 		DrawInternal(&vpMatrix);
 
 		// スケールを元に戻す
-		scale_ = originalScale;
+		transform_.scale = originalScale;
 	}
 	else {
 		DrawInternal(&vpMatrix);
@@ -264,18 +256,18 @@ Matrix3x3 DrawComponent2D::GetFinalTransformMatrix() const {
 }
 
 Vector2 DrawComponent2D::GetFinalPosition() const {
-	Vector2 pos = position_;
+	Vector2 pos = transform_.position;
 	Vector2 offset = effect_.GetPositionOffset();
 	return { pos.x + offset.x, pos.y + offset.y };
 }
 
 Vector2 DrawComponent2D::GetFinalScale() const {
 	Vector2 effectScale = effect_.GetScaleMultiplier();
-	return { scale_.x * effectScale.x, scale_.y * effectScale.y };
+	return { transform_.scale.x * effectScale.x, transform_.scale.y * effectScale.y };
 }
 
 float DrawComponent2D::GetFinalRotation() const {
-	return rotation_ + effect_.GetRotationOffset();
+	return transform_.rotation + effect_.GetRotationOffset();
 }
 
 Vector2 DrawComponent2D::GetFinalDrawSize() const {
@@ -397,7 +389,6 @@ void DrawComponent2D::Setup(int graphHandle, int divX, int divY, int totalFrames
 		);
 	}
 
-
 	// エフェクトをリセット
 	effect_.StopAll();
 
@@ -405,9 +396,10 @@ void DrawComponent2D::Setup(int graphHandle, int divX, int divY, int totalFrames
 	effect_ = Effect(); // コンストラクタで再初期化
 
 	// 基本パラメータをリセット
-	position_ = { 0.0f, 0.0f };
-	scale_ = { 1.0f, 1.0f };
-	rotation_ = 0.0f;
+	transform_.position = { 0.0f, 0.0f };
+	transform_.scale = { 1.0f, 1.0f };
+	transform_.rotation = 0.0f;
+
 	anchorPoint_ = { 0.5f, 0.5f };
 	baseColor_ = 0xFFFFFFFF;
 	flipX_ = false;
@@ -421,9 +413,9 @@ void DrawComponent2D::DrawDebugWindow(const char* windowName) {
 	ImGui::Begin(windowName);
 
 	ImGui::Text("=== Transform ===");
-	ImGui::DragFloat2("Position", &position_.x, 1.0f);
-	ImGui::DragFloat2("Scale", &scale_.x, 0.01f);
-	ImGui::SliderAngle("Rotation", &rotation_);
+	ImGui::DragFloat2("Position", &transform_.position.x, 1.0f);
+	ImGui::DragFloat2("Scale", &transform_.scale.x, 0.01f);
+	ImGui::SliderAngle("Rotation", &transform_.rotation);
 	ImGui::DragFloat2("Anchor", &anchorPoint_.x, 0.01f, 0.0f, 1.0f);
 
 	ImGui::Text("=== Size ===");

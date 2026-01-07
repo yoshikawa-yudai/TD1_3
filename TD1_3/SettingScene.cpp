@@ -35,8 +35,8 @@ namespace {
 SettingScene::SettingScene(SceneManager& mgr)
 	: manager_(mgr) {
 
-	// フレーム画像（旧: SettingScene.h のメンバで LoadTexture していた）
-	frame_ = DrawComponent2D(Tex().GetTexture(TextureId::ResultBackground)); // ←一旦ダミー防止
+	// フレーム画像
+	frame_ = DrawComponent2D(Tex().GetTexture(TextureId::ResultBackground));
 	frame_.SetGraphHandle(Novice::LoadTexture("./Resources/images/explanation/frame.png"));
 	frame_.SetAnchorPoint({ 0.0f, 0.0f });
 	frame_.SetPosition({ 50.0f, 50.0f });
@@ -58,10 +58,9 @@ void SettingScene::ApplyStepsToServices() {
 	Sound().SetBgmVolume(StepToVolume(bgmStep_));
 	Sound().SetSeVolume(StepToVolume(seStep_));
 
-	// 旧コードの誤り修正：Enabled に強度を渡していた
 	Input().SetVibrationStrength(StepToVolume(vibStrengthStep_));
 
-	// 現在再生中BGMに反映（旧 GameShared::ApplyAudioSettings 相当）
+	// 現在再生中BGMに反映
 	Sound().ApplyAudioSettings();
 }
 
@@ -135,8 +134,6 @@ void SettingScene::AdjustCurrent(int dir) {
 
 void SettingScene::Leave(bool apply) {
 	if (apply) {
-		// いまの設計では変更は常に即時反映だが、
-		// 「確定音を鳴らす」「適用を明示する」目的で残す
 		Sound().ApplyAudioSettings();
 		Sound().PlaySe(SeId::Decide);
 	}

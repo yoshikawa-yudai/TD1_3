@@ -6,6 +6,8 @@
 #include "Animation.h"
 #include <Novice.h>
 #include <memory>
+#include "TextureManager.h"
+#include "Transform2D.h"
 
 #ifdef _DEBUG
 #include "imgui.h"
@@ -75,7 +77,6 @@ public:
 	/// </summary>
 	void DrawScreen();
 
-
 	/// <summary>
 	/// Y軸反転描画
 	/// </summary>
@@ -83,16 +84,18 @@ public:
 
 
 	// ========== 位置・変形設定 ==========
+	void SetTransform(const Transform2D& transform) { transform_ = transform; }
+	Transform2D GetTransform() const { return transform_; }
 
-	void SetPosition(const Vector2& pos) { position_ = pos; }
-	Vector2 GetPosition() const { return position_; }
+	void SetPosition(const Vector2& pos) { transform_.position = pos; }
+	Vector2 GetPosition() const { return transform_.position; }
 
-	void SetScale(const Vector2& scale) { scale_ = scale; }
-	void SetScale(float x, float y) { scale_ = { x, y }; }
-	Vector2 GetScale() const { return scale_; }
+	void SetScale(const Vector2& scale) { transform_.scale = scale; }
+	void SetScale(float x, float y) { transform_.scale = { x, y }; }
+	Vector2 GetScale() const { return transform_.scale; }
 
-	void SetRotation(float radians) { rotation_ = radians; }
-	float GetRotation() const { return rotation_; }
+	void SetRotation(float radians) { transform_.rotation = radians; }
+	float GetRotation() const { return transform_.rotation; }
 
 	void SetAnchorPoint(const Vector2& anchor) { anchorPoint_ = anchor; }
 	Vector2 GetAnchorPoint() const { return anchorPoint_; }
@@ -150,6 +153,10 @@ public:
 	/// </summary>
 	void SetGraphHandle(int handle);
 	int GetGraphHandle() const { return graphHandle_; }
+
+	void SetTexture(TextureId textureId) {
+		SetGraphHandle(TextureManager::GetInstance().GetTexture(textureId));
+	}
 
 	// ========== アニメーション制御 ==========
 
@@ -232,9 +239,12 @@ private:
 	std::unique_ptr<Animation> animation_;   // アニメーション管理
 
 	// ========== 変形パラメータ ==========
-	Vector2 position_ = { 0.0f, 0.0f };
-	Vector2 scale_ = { 1.0f, 1.0f };
-	float rotation_ = 0.0f;
+	//Vector2 position_ = { 0.0f, 0.0f };
+	//Vector2 scale_ = { 1.0f, 1.0f };
+	//float rotation_ = 0.0f;
+
+	Transform2D transform_;          // 変換行列計算用ヘルパー
+
 	Vector2 anchorPoint_ = { 0.5f, 0.5f };    // 中心点（0.0～1.0）
 
 	// ========== 描画設定 ==========
@@ -275,11 +285,10 @@ private:
 	/// <summary>
 	/// 描画用の頂点座標を計算
 	/// </summary>
-	void CalculateVertices(Vector2 vertices[4]) const;
+	//void CalculateVertices(Vector2 vertices[4]) const;
 
 	/// <summary>
 	/// アニメーションのソース矩形を取得
 	/// </summary>
 	void GetSourceRect(int& srcX, int& srcY, int& srcW, int& srcH) const;
-
 };

@@ -111,6 +111,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
   <ItemGroup>
     <ClCompile Include="Affine2D.cpp" />
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="GameObject2D.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="BaseStageScene.cpp" />
@@ -118,7 +119,6 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="ButtonManager.cpp" />
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp" />
     <ClCompile Include="Camera2D.cpp" />
-    <ClCompile Include="ComponentBase.cpp" />
     <ClCompile Include="DebugWindow.cpp" />
     <ClCompile Include="DrawComponent2D.cpp" />
     <ClCompile Include="Effect.cpp" />
@@ -151,6 +151,8 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="..\DirectXGame\3d\Camera.h" />
     <ClInclude Include="Affine2D.h" />
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="GameObject2D.h" />
+    <ClInclude Include="Rigidbody2D.hpp" />
     <ClInclude Include="SceneUtilityIncludes.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Background.h" />
@@ -184,7 +186,6 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\DirectXGame\scene\GameScene.h" />
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
     <ClInclude Include="Camera2D.h" />
-    <ClInclude Include="ComponentBase.h" />
     <ClInclude Include="DebugWindow.h" />
     <ClInclude Include="DrawComponent2D.h" />
     <ClInclude Include="Easing.h" />
