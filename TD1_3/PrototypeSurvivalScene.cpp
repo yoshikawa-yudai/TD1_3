@@ -76,7 +76,7 @@ void PrototypeSurvivalScene::SpawnEnemy() {
         enemy->GetDrawComponent()->SetGraphHandle(enemyTex);
 	}
 
-    gameObjectManager_->AddObject(enemy, "Enemy");
+    gameObjectManager_->AddObject(enemy, "Enemy");                                       
 }
 
 void PrototypeSurvivalScene::UpdateCamera(float dt) {
@@ -87,7 +87,7 @@ void PrototypeSurvivalScene::UpdateCamera(float dt) {
     // 最大半径まで広がっているときは、戦場全体を見渡すために少し引く
     float targetZoom = 1.0f;
     if (debris->GetCurrentRadius() > 200.0f) {
-        targetZoom = 0.8f; // 引く
+        targetZoom = 1.4f; // 引く
     }
     else {
         targetZoom = 1.0f; // 寄る
