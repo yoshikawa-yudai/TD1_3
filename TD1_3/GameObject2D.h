@@ -69,7 +69,7 @@ public:
 
     GameObject2D() {
         // デフォルト初期化
-        transform_.position = { 0.0f, 0.0f };
+        transform_.translate = { 0.0f, 0.0f };
         transform_.scale = { 1.0f, 1.0f };
         transform_.rotation = 0.0f;
 
@@ -118,7 +118,7 @@ public:
         rigidbody_.Update(deltaTime);
 
         // 2. 計算された速度を座標に反映
-        transform_.position += rigidbody_.GetMoveDelta(deltaTime);
+        transform_.translate += rigidbody_.GetMoveDelta(deltaTime);
         transform_.rotation += rigidbody_.GetRotationDelta(deltaTime);
 
         // 3. ワールド行列の更新
@@ -154,8 +154,8 @@ public:
     // 描画コンポーネントへのアクセス（細かい設定用）
     DrawComponent2D* GetDrawComponent() { return drawComp_; }
 
-    void SetPosition(const Vector2& pos) { transform_.position = pos; }
-    Vector2 GetPosition() const { return transform_.position; }
+    void SetPosition(const Vector2& pos) { transform_.translate = pos; }
+    Vector2 GetPosition() const { return transform_.translate; }
 
     // --- マネージャー連携用セッター ---
     void SetManager(GameObjectManager* manager) { manager_ = manager; }

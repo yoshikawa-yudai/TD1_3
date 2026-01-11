@@ -251,9 +251,6 @@
     <ClCompile Include="Particle.cpp">
       <Filter>KamataEngine\Source\library\2D\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="Object2D.cpp">
-      <Filter>KamataEngine\Source\library\2D\Object</Filter>
-    </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>KamataEngine\Source\library\Input\InputManager</Filter>
     </ClCompile>
@@ -279,6 +276,12 @@
       <Filter>KamataEngine\Source\Game\Map\MapEditor</Filter>
     </ClCompile>
     <ClCompile Include="PrototypeSurvivalScene.cpp">
+      <Filter>KamataEngine\Source\Game\Scene\Proto\PrototypeSurvivalScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SurvivalGameManager.cpp">
+      <Filter>KamataEngine\Source\Game\Scene\Proto\PrototypeSurvivalScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SurvivalObjects.cpp">
       <Filter>KamataEngine\Source\Game\Scene\Proto\PrototypeSurvivalScene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -481,12 +484,6 @@
     <ClInclude Include="ParticleEnum.h">
       <Filter>KamataEngine\Source\library\2D\Particle</Filter>
     </ClInclude>
-    <ClInclude Include="Object2D.h">
-      <Filter>KamataEngine\Source\library\2D\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform2D.h">
-      <Filter>KamataEngine\Source\library\2D\Object</Filter>
-    </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>KamataEngine\Source\library\Input\InputManager</Filter>
     </ClInclude>
@@ -525,6 +522,15 @@
     </ClInclude>
     <ClInclude Include="PrototypeSurvivalScene.h">
       <Filter>KamataEngine\Source\Game\Scene\Proto\PrototypeSurvivalScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SurvivalGameManager.h">
+      <Filter>KamataEngine\Source\Game\Scene\Proto\PrototypeSurvivalScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SurvivalObjects.h">
+      <Filter>KamataEngine\Source\Game\Scene\Proto\PrototypeSurvivalScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform2D.h">
+      <Filter>KamataEngine\Source\library\2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

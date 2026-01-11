@@ -33,17 +33,17 @@ public:
 	void Move(float deltaTime);
 
 	// ========== ゲッター ==========
-	Vector2 GetPosition() const { return transform_.position; }
+	Vector2 GetPosition() const { return transform_.translate; }
 	Vector2 GetVelocity() const { return rigidbody_.velocity; }
 	float GetRadius() const { return radius_; }
 	bool IsAlive() const { return info_.isActive; }
 
 	// 位置への const 参照を返すメソッド
-	const Vector2& GetPositionRef() const { return transform_.position; }
+	const Vector2& GetPositionRef() const { return transform_.translate; }
 
 
 	// ========== セッター ==========
-	void SetPosition(const Vector2& pos) { transform_.position = pos; }
+	void SetPosition(const Vector2& pos) { transform_.translate = pos; }
 	void SetAlive(bool alive) { info_.isActive = alive; }
 
 	// ========== デバッグ ==========

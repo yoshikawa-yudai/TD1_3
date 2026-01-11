@@ -6,7 +6,7 @@
 
 struct Transform2D {
 	// ローカル座標
-	Vector2 position = { 0.0f, 0.0f };
+	Vector2 translate = { 0.0f, 0.0f };
 	Vector2 scale = { 1.0f, 1.0f };
 	float rotation = 0.0f; // in radian
 
@@ -15,6 +15,6 @@ struct Transform2D {
 
 	// World行列を再計算する関数
 	void CalculateWorldMatrix() {
-		worldMatrix = AffineMatrix2D::MakeAffine(scale, rotation, position);
+		worldMatrix = AffineMatrix2D::MakeAffine(scale, rotation, translate);
 	}
 };

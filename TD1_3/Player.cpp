@@ -12,7 +12,7 @@ Player::Player() {
 	drawComp_ = new DrawComponent2D(Tex().GetTexture(TextureId::PlayerAnimeNormal), 5, 1, 5, 0.1f, true);
 
 	// 初期設定
-	drawComp_->SetPosition(transform_.position);
+	drawComp_->SetPosition(transform_.translate);
 	drawComp_->SetScale({ 1.0f, 1.0f });  // 2倍サイズで描画
 	drawComp_->SetAnchorPoint({ 0.5f, 0.5f });  // 中心を基準点に
 }
@@ -24,7 +24,7 @@ Player::~Player() {
 }
 
 void Player::Initialize() {
-	transform_.position = { 640.0f, 360.0f };
+	transform_.translate = { 640.0f, 360.0f };
 }
 
 void Player::Move(float deltaTime) {
@@ -54,7 +54,7 @@ void Player::Move(float deltaTime) {
 
 	// 位置を更新
 	Vector2 moveDelta = rigidbody_.velocity * deltaTime;
-	transform_.position += moveDelta;
+	transform_.translate += moveDelta;
 
 	// 画面内に制限
 	//position_.x = std::clamp(position_.x, 32.0f, 1280.0f - 32.0f);
@@ -130,7 +130,7 @@ void Player::Update(float deltaTime) {
 	}
 
 	// DrawComponent2D の位置を更新
-	drawComp_->SetPosition(transform_.position);
+	drawComp_->SetPosition(transform_.translate);
 
 	// DrawComponent2D を更新（アニメーション・エフェクト）
 	drawComp_->Update(deltaTime);
@@ -157,7 +157,7 @@ void Player::DrawDebugWindow() {
 	ImGui::Begin("Player Debug");
 
 	ImGui::Text("=== Transform ===");
-	ImGui::Text("Position: (%.1f, %.1f)", transform_.position.x, transform_.position.y);
+	ImGui::Text("Position: (%.1f, %.1f)", transform_.translate.x, transform_.translate.y);
 	ImGui::Text("Velocity: (%.1f, %.1f)", rigidbody_.velocity.x, rigidbody_.velocity.y);
 	ImGui::End();
 

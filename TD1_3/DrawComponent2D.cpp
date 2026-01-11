@@ -266,7 +266,7 @@ Matrix3x3 DrawComponent2D::GetFinalTransformMatrix() const {
 }
 
 Vector2 DrawComponent2D::GetFinalPosition() const {
-	Vector2 pos = transform_.position;
+	Vector2 pos = transform_.translate;
 	Vector2 offset = effect_.GetPositionOffset();
 	return { pos.x + offset.x, pos.y + offset.y };
 }
@@ -406,7 +406,7 @@ void DrawComponent2D::Setup(int graphHandle, int divX, int divY, int totalFrames
 	effect_ = Effect(); // コンストラクタで再初期化
 
 	// 基本パラメータをリセット
-	transform_.position = { 0.0f, 0.0f };
+	transform_.translate = { 0.0f, 0.0f };
 	transform_.scale = { 1.0f, 1.0f };
 	transform_.rotation = 0.0f;
 
@@ -423,7 +423,7 @@ void DrawComponent2D::DrawDebugWindow(const char* windowName) {
 	ImGui::Begin(windowName);
 
 	ImGui::Text("=== Transform ===");
-	ImGui::DragFloat2("Position", &transform_.position.x, 1.0f);
+	ImGui::DragFloat2("Position", &transform_.translate.x, 1.0f);
 	ImGui::DragFloat2("Scale", &transform_.scale.x, 0.01f);
 	ImGui::SliderAngle("Rotation", &transform_.rotation);
 	ImGui::DragFloat2("Anchor", &anchorPoint_.x, 0.01f, 0.0f, 1.0f);

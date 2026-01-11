@@ -51,6 +51,8 @@ public:
 	DrawComponent2D& operator=(const DrawComponent2D& other);
 	DrawComponent2D& operator=(DrawComponent2D&& other) noexcept;
 
+
+
 	// ========== 更新 ==========
 
 	/// <summary>
@@ -93,8 +95,8 @@ public:
 	void SetTransform(const Transform2D& transform) { transform_ = transform; }
 	Transform2D GetTransform() const { return transform_; }
 
-	void SetPosition(const Vector2& pos) { transform_.position = pos; }
-	Vector2 GetPosition() const { return transform_.position; }
+	void SetPosition(const Vector2& pos) { transform_.translate = pos; }
+	Vector2 GetPosition() const { return transform_.translate; }
 
 	void SetScale(const Vector2& scale) { transform_.scale = scale; }
 	void SetScale(float x, float y) { transform_.scale = { x, y }; }
