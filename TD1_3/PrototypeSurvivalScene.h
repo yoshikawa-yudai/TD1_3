@@ -1,22 +1,23 @@
 ﻿#pragma once
 #include "IGameScene.h"
+#include "InputManager.h"
 #include "Vector2.h"
 #include <vector>
 #include <memory>
 
+// 前方宣言
 class SceneManager;
 
-// クラス内で完結させるための前方宣言等はせず、ここに構造体を定義してしまいます
-// （プロトタイプとしての可搬性を優先）
-
 /// <summary>
-/// 「収縮と発散」プロトタイプシーン
+/// 「収縮と発散」プロトタイプシーン（IGameScene対応版）
 /// </summary>
-class PrototypeSurvivalScene : public IGameScene{
+class PrototypeSurvivalScene : public IGameScene {
 public:
-    PrototypeSurvivalScene(SceneManager& mgr);
+    // SceneManagerを受け取るコンストラクタに変更
+    PrototypeSurvivalScene(SceneManager& manager);
     ~PrototypeSurvivalScene() override;
 
+    // IGameSceneのインターフェースに合わせる
     void Update(float deltaTime, const char* keys, const char* preKeys) override;
     void Draw() override;
 
@@ -28,35 +29,40 @@ private: // --- 内部クラス・構造体定義 ---
         float radius = 16.0f;
         int hp = 5;
         int maxHp = 5;
-        float invincibilityTimer = 0.0f; // 無敵時間
+        float invincibilityTimer = 0.0f;
         unsigned int color = 0xFFFFFFFF;
     };
 
-    // デブリ（攻防一体の壁）
+    // デブリの個体情報（バラつき用）
+    struct DebrisPiece {
+        float angleOffset; // 配置角度
+        float distNoise;   // 半径の微妙なズレ
+        float speedScale;  // 広がる速度の個体差
+        float selfRotSpeed;// 自転速度
+        float currentSelfAngle; // 現在の自転角度
+    };
+
+    // デブリ管理
     enum class DebrisState {
-        Idle,       // 追従（最小半径）
-        Expanding,  // 発散中
-        WaitMax,    // 最大展開維持
-        Contracting,// 収縮（攻撃）
-        Cooldown    // 赤熱硬直
+        Idle, Expanding, WaitMax, Contracting, Cooldown
     };
 
     struct Proto_DebrisManager {
         float currentRadius;
         float minRadius = 60.0f;
         float maxRadius = 250.0f;
-        float rotationAngle = 0.0f; // 全体の回転
+        float rotationAngle = 0.0f; // 全体の公転
 
         DebrisState state = DebrisState::Idle;
         float cooldownTimer = 0.0f;
-        bool isCritical = false; // 最大展開からの収縮ボーナス
+        bool isCritical = false;
 
-        // パラメータ
         float expandSpeed = 300.0f;
-        float contractSpeed = 1200.0f; // キビキビした戻り
-        float rotationSpeed = 2.0f;    // 回転速度
+        float contractSpeed = 1200.0f;
+        float rotationSpeed = 2.0f;
 
-        // 描画用
+        // 個々のデブリ管理用
+        std::vector<DebrisPiece> pieces; // 個体配列
         int debrisCount = 64;
         float debrisSize = 12.0f;
     };
@@ -71,27 +77,25 @@ private: // --- 内部クラス・構造体定義 ---
         float radius;
         bool isAlive = false;
 
-        // ノックバック処理用
         Vector2 knockbackVel = { 0,0 };
         float knockbackDuration = 0.0f;
     };
 
 private: // --- メンバ変数 ---
+
+    // シーン遷移等に使うため保持
     SceneManager* manager_;
 
-    // ゲームオブジェクト
+    std::unique_ptr<InputManager> input_;
     Proto_Player player_;
     Proto_DebrisManager debris_;
     std::vector<Proto_Enemy> enemies_;
 
-    // レベルデザイン・制御
     float enemySpawnTimer_ = 0.0f;
-
-    // 演出（Game Feel）
-    float hitStopTimer_ = 0.0f;   // 0より大きいとき更新を止める
+    float hitStopTimer_ = 0.0f;
     float screenShakeTimer_ = 0.0f;
     float screenShakePower_ = 0.0f;
-    Vector2 cameraOffset_ = { 0,0 }; // シェイク適用後のオフセット
+    Vector2 cameraOffset_ = { 0,0 };
 
 private: // --- ヘルパー関数 ---
 
@@ -100,9 +104,9 @@ private: // --- ヘルパー関数 ---
     void UpdateEnemies(float dt);
     void CheckCollisions();
 
-    // 敵のスポーン
     void SpawnEnemy();
-
-    // 演出
     void StartShake(float duration, float power);
+
+    // 角度を正規化する関数 (-PI ~ PI)
+    float NormalizeAngle(float angle);
 };

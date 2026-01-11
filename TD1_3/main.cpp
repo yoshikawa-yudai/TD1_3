@@ -28,7 +28,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//Novice::SetWindowMode(kFullscreen);
 
 	SoundManager::GetInstance().LoadResources();
-	Camera2D::GetInstance().SetisWorldYUp(true);
+
+	Camera2D::GetInstance().SetIsWorldYUp(true);
 
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };

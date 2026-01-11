@@ -68,7 +68,7 @@ public:
 
 	// === Y軸反転取得 ===
 	bool IsWorldYUp() const { return isWorldYUp_; }
-	void SetisWorldYUp(bool invert) { isWorldYUp_ = invert; }
+	void SetIsWorldYUp(bool invert) { isWorldYUp_ = invert; }
 
 	// デバッグ用
 	bool GetIsDebugCamera() { return isDebugCamera_; }
