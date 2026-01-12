@@ -15,7 +15,6 @@
 
 SceneManager::SceneManager() {
 	shared_.LoadCommonTextures();
-	particleManager_ = std::make_unique<ParticleManager>();
 	ChangeScene(SceneType::PrototypeSurvival);
 }
 

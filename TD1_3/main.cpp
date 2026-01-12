@@ -10,6 +10,7 @@
 #include "SoundManager.h"
 #include "InputManager.h"
 #include "TextureManager.h"
+#include "ParticleManager.h"
 
 #include "Camera2D.h"
 
@@ -30,6 +31,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	SoundManager::GetInstance().LoadResources();
 
 	Camera2D::GetInstance().SetIsWorldYUp(true);
+
+	ParticleManager::GetInstance().Load();
+
+	TextureManager::GetInstance().LoadResources();
 
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };

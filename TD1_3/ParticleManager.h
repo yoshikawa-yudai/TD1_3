@@ -71,6 +71,7 @@ class ParticleManager {
 	friend class DebugWindow;
 public:
 	ParticleManager();
+	void Load(); // シングルトン初期化用
 	~ParticleManager() = default;
 
 	static ParticleManager& GetInstance(){
@@ -78,6 +79,7 @@ public:
 		return instance;
 	}
 
+	void Initialize();
 	void Update(float deltaTime);
 	void Draw(const Camera2D& camera);
 	void Emit(ParticleType type, const Vector2& pos);

@@ -63,9 +63,6 @@ private:
 	// 共有リソース
 	GameShared shared_;
 
-	// パーティクル管理(シングルトンの初期化実行)
-	std::unique_ptr<ParticleManager> particleManager_;
-
 	// ゲーム終了フラグ
 	bool shouldQuit_ = false;
 

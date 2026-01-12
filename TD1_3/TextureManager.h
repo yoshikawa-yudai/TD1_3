@@ -54,7 +54,8 @@ public:
 	// テクスチャハンドル取得
 	int GetTexture(TextureId id) const;
 
-private:
 	void LoadResources();
+
+private:
 	std::array<int, static_cast<int>(TextureId::Count)> textureResources_;
 };

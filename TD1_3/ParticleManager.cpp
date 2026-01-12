@@ -34,6 +34,15 @@ static const float kDeg2Rad = 3.14159265f / 180.0f;
 static const std::string kDefaultParamPath = "Resources/Data/particle_params.json";
 
 ParticleManager::ParticleManager() {
+	Initialize();
+}
+
+void ParticleManager::Load() {
+	// シングルトン初期化用
+	Initialize();
+}
+
+void ParticleManager::Initialize() {
 	LoadCommonResources();  // 先にテクスチャをロード
 
 	// JSONからパラメータを読み込み（ファイルがなければデフォルトで作成）
