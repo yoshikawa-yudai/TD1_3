@@ -508,9 +508,6 @@
     <ClInclude Include="GameObjectManager.h">
       <Filter>KamataEngine\Source\library\2D\Object\GameObjectManager</Filter>
     </ClInclude>
-    <ClInclude Include="GamaManager.hpp">
-      <Filter>KamataEngine\Source\Game\Scene\Game</Filter>
-    </ClInclude>
     <ClInclude Include="MapChip.h">
       <Filter>KamataEngine\Source\library\MapChipSystem\MapChip</Filter>
     </ClInclude>

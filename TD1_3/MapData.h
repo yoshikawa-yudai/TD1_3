@@ -68,8 +68,8 @@ private:
     std::vector<std::vector<int>> tiles_;
 
     // マップのサイズ
-    int width_ = 0;  // 列数 (x)
-    int height_ = 0; // 行数 (y)
+    int width_ = 1000;  // 列数 (x)
+    int height_ = 1000; // 行数 (y)
     float tileSize_ = 64.0f;
 
     // (拡張用) 敵の出現リストなど

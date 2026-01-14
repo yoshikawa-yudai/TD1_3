@@ -49,8 +49,4 @@ private:
     MapData mapData_;       // データ
     MapChip mapChip_;       // 描画
     MapChipEditor mapEditor_;   // エディタ
-
-
-    int grHandleBackground_ = -1;
-    int grHandleFrame_ = -1;
 };

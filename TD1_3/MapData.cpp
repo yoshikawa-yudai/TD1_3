@@ -2,7 +2,7 @@
 
 MapData::MapData() {
     // デフォルトで空のマップを作っておく
-    Reset(20, 15);
+    Reset(1000, 1000);
 }
 
 void MapData::Reset(int width, int height, float tileSize) {
@@ -24,8 +24,8 @@ bool MapData::Load(const std::string& filePath) {
 
     try {
         // 基本情報の読み込み
-        width_ = JsonUtil::GetValue<int>(j, "width", 20);
-        height_ = JsonUtil::GetValue<int>(j, "height", 15);
+        width_ = JsonUtil::GetValue<int>(j, "width", 1000);
+        height_ = JsonUtil::GetValue<int>(j, "height", 1000);
         tileSize_ = JsonUtil::GetValue<float>(j, "tileSize", 64.0f);
 
         // 配列のリサイズ

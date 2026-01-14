@@ -12,9 +12,6 @@
 GamePlayScene::GamePlayScene(SceneManager& mgr)
 	: manager_(mgr){
 
-	grHandleBackground_ = Novice::LoadTexture("./Resources/images/explanation/background.png");
-	grHandleFrame_ = Novice::LoadTexture("./Resources/images/explanation/frame.png");
-
 	Initialize();
 
 	particleManager_ = new ParticleManager();
@@ -37,19 +34,19 @@ void GamePlayScene::Initialize() {
 	objectManager_.Clear();
 	player_ = nullptr;
 
-	// --- ★マップシステムの初期化 ---
+	// --- マップシステムの初期化 ---
 	// 1. エディタ初期化（タイル定義のロード）
 	mapEditor_.Initialize();
 
 	// 2. マップデータのロード（ファイルがない場合は初期リセットされる）
 	// ※パスは適宜調整してください
 	if (!mapData_.Load("./Resources/data/stage1.json")) {
-		mapData_.Reset(40, 30); // 読み込めなかったら仮のサイズで作成
+		mapData_.Reset(1000, 1000); // 読み込めなかったら仮のサイズで作成
 	}
 
 	// 3. マップ描画クラスの初期化
 	// タイルセット画像のパスを指定してください
-	mapChip_.Initialize(&mapData_, "./Resources/images/gamePlay/block1_ver1.png");
+	mapChip_.Initialize(&mapData_);
 
 	InitializeCamera();
 	InitializeObjects(); // ここでPlayer生成
