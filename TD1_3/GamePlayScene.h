@@ -46,7 +46,7 @@ private:
     std::unique_ptr<DebugWindow> debugWindow_;
 
     // ========== マップシステム追加 ==========
-    MapData mapData_;       // データ
+    MapData& mapData_ = MapData::GetInstance();       // データ
     MapChip mapChip_;       // 描画
     MapChipEditor mapEditor_;   // エディタ
 };

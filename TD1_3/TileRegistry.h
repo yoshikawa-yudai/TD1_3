@@ -76,7 +76,7 @@ public:
 		// --- Decoration Layer (装飾) ---
 		// ID:10 草 (Decoration)
 		tiles_.push_back({
-			10, "Grass", TextureId::None, TileType::Solid, false, // 当たり判定なし
+			10, "Grass", TextureId::Deco_Grass, TileType::Solid, false, // 当たり判定なし
 			TileLayer::Decoration, {0.0f, 8.0f} // オフセットで位置微調整
 			});
 

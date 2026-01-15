@@ -38,15 +38,8 @@ void GamePlayScene::Initialize() {
 	// 1. エディタ初期化（タイル定義のロード）
 	mapEditor_.Initialize();
 
-	// 2. マップデータのロード（ファイルがない場合は初期リセットされる）
-	// ※パスは適宜調整してください
-	if (!mapData_.Load("./Resources/data/stage1.json")) {
-		mapData_.Reset(1000, 1000); // 読み込めなかったら仮のサイズで作成
-	}
-
 	// 3. マップ描画クラスの初期化
-	// タイルセット画像のパスを指定してください
-	mapChip_.Initialize(&mapData_);
+	mapChip_.Initialize();
 
 	InitializeCamera();
 	InitializeObjects(); // ここでPlayer生成

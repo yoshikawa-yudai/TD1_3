@@ -12,8 +12,6 @@ struct EnemySpawnInfo {
     Vector2 position;
 };
 
-// MapDataはほかのクラスを知らない
-
 /// <summary>
 /// マップの数値データとリソース情報を管理するクラス
 /// 描画や当たり判定のロジックは持たない
@@ -25,6 +23,16 @@ public:
 
     // デストラクタ
     ~MapData() = default;
+
+    // シングルトンにする
+    static MapData& GetInstance() {
+        static MapData instance;
+        return instance;
+	}
+
+	// 削除・コピー禁止
+	MapData(const MapData&) = delete;
+	MapData& operator=(const MapData&) = delete;
 
     /// <summary>
     /// マップデータをリセット（指定サイズで0埋め）
@@ -73,7 +81,6 @@ public:
 
 	// 指定レイヤーの配列ポインタを取得するヘルパー（const版）
 	const std::vector<std::vector<int>>* GetLayerData(TileLayer layer) const;
-
 
 private:
     // ==============================

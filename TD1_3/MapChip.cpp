@@ -8,8 +8,8 @@ MapChip::MapChip() {
 MapChip::~MapChip() {
 }
 
-void MapChip::Initialize(MapData* mapData) {
-	mapData_ = mapData;
+void MapChip::Initialize() {
+	mapData_ = &MapData::GetInstance();
 
 	// TextureManagerからハンドルを取得してキャッシュを作成
 	LoadTexturesFromManager();
@@ -97,11 +97,21 @@ void MapChip::DrawLayer(Camera2D& camera, TileLayer layer) {
 			Novice::GetTextureSize(handle, &texW, &texH);
 			if (texW <= 0 || texH <= 0) continue;
 
-			// ===== タイルのワールド4頂点（左上基準） =====
-			const float tileLeft = x * tileSize;
-			const float tileTop = y * tileSize;
-			const float tileRight = tileLeft + tileSize;
-			const float tileBottom = tileTop + tileSize;
+			// ===== 描画サイズの決定 =====
+			float drawWidth = tileSize;
+			float drawHeight = tileSize;
+
+			// Decorationレイヤーの場合はテクスチャの実サイズを使用
+			if (layer == TileLayer::Decoration) {
+				drawWidth = static_cast<float>(texW);
+				drawHeight = static_cast<float>(texH);
+			}
+
+			// ===== タイルのワールド4頂点（左上基準 + オフセット適用） =====
+			const float tileLeft = x * tileSize + def->drawOffset.x;
+			const float tileTop = y * tileSize + def->drawOffset.y;
+			const float tileRight = tileLeft + drawWidth;
+			const float tileBottom = tileTop + drawHeight;
 
 			const Vector2 wLT = { tileLeft , tileTop };
 			const Vector2 wRT = { tileRight, tileTop };

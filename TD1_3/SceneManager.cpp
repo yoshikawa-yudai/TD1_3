@@ -11,10 +11,13 @@
 
 #include "SceneUtilityIncludes.h"
 
+#include "MapData.h"
+
 #include <Novice.h>
 
 SceneManager::SceneManager() {
 	shared_.LoadCommonTextures();
+	MapData::GetInstance().Load("./Resources/data/stage1.json");
 	ChangeScene(SceneType::Title);
 }
 

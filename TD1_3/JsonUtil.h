@@ -64,9 +64,8 @@ public:
 	/// </summary>
 	/// <param name="filepath">保存先のファイルパス</param>
 	/// <param name="j">保存するJSONデータ</param>
-	/// <param name="indent">インデント幅（デフォルト: 4）</param>
 	/// <returns>成功した場合true、失敗した場合false</returns>
-	static bool SaveToFile(const std::string& filepath, const json& j, int indent = 4) {
+	static bool SaveToFile(const std::string& filepath, const json& j) {
 		try {
 			std::ofstream file(filepath);
 			if (!file.is_open()) {
@@ -76,7 +75,7 @@ public:
 				return false;
 			}
 
-			file << j.dump(indent);
+			file << j.dump(1);
 #ifdef _DEBUG
 			Novice::ConsolePrintf("JsonUtil: Saved: %s\n", filepath.c_str());
 #endif

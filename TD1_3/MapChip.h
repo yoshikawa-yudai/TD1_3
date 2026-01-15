@@ -19,7 +19,7 @@ public:
     /// </summary>
     /// <param name="mapData">マップデータ</param>
     /// <param name="texManager">テクスチャマネージャー（ハンドル取得用）</param>
-    void Initialize(MapData* mapData);
+    void Initialize();
 
     // 全レイヤーの描画
     void Draw(Camera2D& camera);

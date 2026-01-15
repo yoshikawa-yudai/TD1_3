@@ -1520,7 +1520,7 @@ bool ParticleManager::SaveParamsToJson(const std::string& filepath) {
 	try {
 		nlohmann::json j = SerializeParams();
 
-		if (JsonUtil::SaveToFile(filepath, j, 4)) {
+		if (JsonUtil::SaveToFile(filepath, j)) {
 #ifdef _DEBUG
 			Novice::ConsolePrintf("ParticleManager: Parameters saved to %s\n", filepath.c_str());
 #endif

@@ -49,6 +49,9 @@ void TextureManager::LoadResources() {
 	textureResources_[static_cast<int>(TextureId::Deco_Scrap)] = 
 		Novice::LoadTexture("./Resources/images/mapChip/decoration/scrap_supplystation.png");
 
+	textureResources_[static_cast<int>(TextureId::Deco_Grass)] =
+		Novice::LoadTexture("./Resources/images/mapChip/decoration/gras.png");
+
 
 	// =========Background ==========
 	textureResources_[static_cast<int>(TextureId::Background0_0)] =
