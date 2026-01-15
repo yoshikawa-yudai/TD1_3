@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <Novice.h>
 
 #include "json.hpp"
@@ -83,6 +84,74 @@ public:
 		}
 		catch (const std::exception& e) {
 			e;
+#ifdef _DEBUG
+			Novice::ConsolePrintf("JsonUtil: Write error: %s\n", e.what());
+#endif
+			return false;
+		}
+	}
+
+	/// <summary>
+	/// マップデータ専用：コンパクトフォーマットで保存（各行を1行のJSON配列として）
+	/// </summary>
+	static bool SaveMapCompact(const std::string& filepath, const json& j) {
+		try {
+			std::ofstream file(filepath);
+			if (!file.is_open()) {
+#ifdef _DEBUG
+				Novice::ConsolePrintf("JsonUtil: Failed to open for writing: %s\n", filepath.c_str());
+#endif
+				return false;
+			}
+
+			file << "{\n";
+
+			// メタデータ
+			file << " \"width\": " << j["width"] << ",\n";
+			file << " \"height\": " << j["height"] << ",\n";
+			file << " \"tileSize\": " << j["tileSize"] << ",\n";
+
+			file << " \"layers\": {\n";
+
+			// レイヤー名のリスト
+			const std::vector<std::string> layerNames = { "background", "decoration", "block", "object" };
+			bool firstLayer = true;
+
+			for (const auto& layerName : layerNames) {
+				if (!j["layers"].contains(layerName)) continue;
+
+				if (!firstLayer) file << ",\n";
+				firstLayer = false;
+
+				file << "  \"" << layerName << "\": [\n";
+
+				const auto& layer = j["layers"][layerName];
+				for (size_t y = 0; y < layer.size(); ++y) {
+					file << "   [";
+
+					const auto& row = layer[y];
+					for (size_t x = 0; x < row.size(); ++x) {
+						file << row[x];
+						if (x < row.size() - 1) file << ",";
+					}
+
+					file << "]";
+					if (y < layer.size() - 1) file << ",";
+					file << "\n";
+				}
+
+				file << "  ]";
+			}
+
+			file << "\n }\n";
+			file << "}\n";
+
+#ifdef _DEBUG
+			Novice::ConsolePrintf("JsonUtil: Saved compact map: %s\n", filepath.c_str());
+#endif
+			return true;
+		}
+		catch (const std::exception& e) {
 #ifdef _DEBUG
 			Novice::ConsolePrintf("JsonUtil: Write error: %s\n", e.what());
 #endif

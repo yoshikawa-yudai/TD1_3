@@ -67,6 +67,12 @@ bool MapData::Load(const std::string& filePath) {
 }
 
 bool MapData::Save(const std::string& filePath) {
+    // 拡張子で判定
+    if (filePath.ends_with(".bin") || filePath.ends_with(".mapbin")) {
+        //return SaveBinary(filePath);
+    }
+
+    // JSON形式（コンパクトフォーマット）
     json j;
     JsonUtil::SetValue(j, "width", width_);
     JsonUtil::SetValue(j, "height", height_);
@@ -78,7 +84,8 @@ bool MapData::Save(const std::string& filePath) {
     j["layers"]["block"] = tilesBlock_;
     j["layers"]["object"] = tilesObject_;
 
-    return JsonUtil::SaveToFile(filePath, j);
+    // コンパクトフォーマットで保存
+    return JsonUtil::SaveMapCompact(filePath, j);
 }
 
 // 指定レイヤーの配列ポインタを取得するヘルパー
