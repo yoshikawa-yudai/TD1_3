@@ -3,7 +3,7 @@
 #include <string>
 #include <Novice.h>
 #include "Vector2.h"
-#include "JsonUtil.h" // 既存のJsonUtilを使用
+#include "JsonUtil.h" 
 #include "TileRegistry.h" // TileLayer定義のためインクルード
 
 // 将来的に敵の出現位置なども管理するための構造体
@@ -93,12 +93,12 @@ private:
 
    // std::vector<std::vector<int>> tilesBlock_;
 
-	static const int kMapChipWidth = 1000;
-	static const int kMapChipHeight = 1000;
+	static const int kMapChipWidth = 500;
+	static const int kMapChipHeight = 500;
 
     // マップのサイズ
-    int width_ = 1000;  // 列数 (x)
-    int height_ = 1000; // 行数 (y)
+    int width_ = kMapChipWidth;  // 列数 (x)
+    int height_ = kMapChipHeight; // 行数 (y)
     float tileSize_ = 64.0f;
 
     // (拡張用) 敵の出現リストなど

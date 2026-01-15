@@ -2,7 +2,7 @@
 
 MapData::MapData() {
     // デフォルトで空のマップを作っておく
-    Reset(1000, 1000);
+    Reset(kMapChipWidth, kMapChipHeight);
 }
 
 void MapData::Reset(int width, int height, float tileSize) {
