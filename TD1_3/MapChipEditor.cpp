@@ -1,5 +1,6 @@
 ﻿#include "MapChipEditor.h"
 #include "SceneUtilityIncludes.h"
+#include "ObjectRegistry.h"
 #include <queue>
 
 namespace {
@@ -19,7 +20,10 @@ namespace {
 
 void MapChipEditor::Initialize() {
     TileRegistry::Initialize();
+    ObjectRegistry::Initialize();
     selectedTileId_ = 1;
+    selectedObjectTypeId_ = 100;
+    selectedObjectIndex_ = -1;
     currentMode_ = ToolMode::Pen;
     currentLayer_ = TileLayer::Block;
 
@@ -31,21 +35,18 @@ void MapChipEditor::Initialize() {
 }
 
 void MapChipEditor::UpdateAndDrawImGui(MapData& mapData, Camera2D& camera) {
-    // ショートカットキーの処理 (ImGuiウィンドウ外でも効くように先頭で)
-    // Ctrlキーが押されているかチェック
+    // ショートカットキー処理
     bool isCtrlPressed = Input().PressKey(DIK_LCONTROL) || Input().PressKey(DIK_RCONTROL);
     bool isShiftPressed = Input().PressKey(DIK_LSHIFT) || Input().PressKey(DIK_RSHIFT);
 
-    // Ctrl + Z : Undo
     if (isCtrlPressed && Input().TriggerKey(DIK_Z)) {
         if (isShiftPressed) {
-            ExecuteRedo(mapData); // Ctrl + Shift + Z
+            ExecuteRedo(mapData);
         }
         else {
-            ExecuteUndo(mapData); // Ctrl + Z
+            ExecuteUndo(mapData);
         }
     }
-    // Ctrl + Y : Redo (Windows標準)
     if (isCtrlPressed && Input().TriggerKey(DIK_Y)) {
         ExecuteRedo(mapData);
     }
@@ -61,7 +62,6 @@ void MapChipEditor::UpdateAndDrawImGui(MapData& mapData, Camera2D& camera) {
     ImGui::SameLine();
     if (ImGui::Button("Load Map")) {
         mapData.Load("./Resources/data/stage1.json");
-        // ロードしたら履歴はリセットするのが安全
         undoStack_.clear();
         redoStack_.clear();
     }
@@ -73,7 +73,7 @@ void MapChipEditor::UpdateAndDrawImGui(MapData& mapData, Camera2D& camera) {
 
     ImGui::Separator();
 
-    // Undo / Redo ボタン
+    // Undo / Redo
     if (ImGui::Button("Undo (Ctrl+Z)")) {
         ExecuteUndo(mapData);
     }
@@ -81,93 +81,244 @@ void MapChipEditor::UpdateAndDrawImGui(MapData& mapData, Camera2D& camera) {
     if (ImGui::Button("Redo (Ctrl+Y)")) {
         ExecuteRedo(mapData);
     }
-    // スタック数を表示（デバッグ用）
     ImGui::Text("History: Undo[%d] Redo[%d]", (int)undoStack_.size(), (int)redoStack_.size());
 
     ImGui::Separator();
 
-    // --- レイヤー選択 ---
-    ImGui::Text("Layer:");
-    if (ImGui::RadioButton("Block (1)", currentLayer_ == TileLayer::Block)) {
-        currentLayer_ = TileLayer::Block;
-        // レイヤー切り替え時に選択中のタイルが対象レイヤーでない場合、デフォルトを選択
-        const TileDefinition* currentTile = TileRegistry::GetTile(selectedTileId_);
-        if (!currentTile || currentTile->layer != currentLayer_) {
-            selectedTileId_ = 1; // Blockレイヤーのデフォルト（Ground）
+    // --- モード選択 ---
+    ImGui::Text("Mode:");
+    if (ImGui::RadioButton("Tile Edit", currentMode_ != ToolMode::Object)) {
+        if (currentMode_ == ToolMode::Object) {
+            currentMode_ = ToolMode::Pen;
+            selectedObjectIndex_ = -1;
         }
     }
     ImGui::SameLine();
-    if (ImGui::RadioButton("Decoration (2)", currentLayer_ == TileLayer::Decoration)) {
-        currentLayer_ = TileLayer::Decoration;
-        // レイヤー切り替え時に選択中のタイルが対象レイヤーでない場合、デフォルトを選択
-        const TileDefinition* currentTile = TileRegistry::GetTile(selectedTileId_);
-        if (!currentTile || currentTile->layer != currentLayer_) {
-            selectedTileId_ = 10; // Decorationレイヤーのデフォルト（Grass）
+    if (ImGui::RadioButton("Object (3)", currentMode_ == ToolMode::Object)) {
+        currentMode_ = ToolMode::Object;
+    }
+
+    // キーボードショートカット
+    if (!ImGui::GetIO().WantCaptureKeyboard) {
+        if (Input().TriggerKey(DIK_3)) {
+            currentMode_ = ToolMode::Object;
         }
     }
 
-    // キーボードショートカットでレイヤー切り替え
-    if (!ImGui::GetIO().WantCaptureKeyboard) {
-        if (Input().TriggerKey(DIK_1)) {
+    ImGui::Separator();
+
+    // --- タイル編集モード ---
+    if (currentMode_ != ToolMode::Object) {
+        // レイヤー選択
+        ImGui::Text("Layer:");
+        if (ImGui::RadioButton("Block (1)", currentLayer_ == TileLayer::Block)) {
             currentLayer_ = TileLayer::Block;
             const TileDefinition* currentTile = TileRegistry::GetTile(selectedTileId_);
             if (!currentTile || currentTile->layer != currentLayer_) {
                 selectedTileId_ = 1;
             }
         }
-        if (Input().TriggerKey(DIK_2)) {
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Decoration (2)", currentLayer_ == TileLayer::Decoration)) {
             currentLayer_ = TileLayer::Decoration;
             const TileDefinition* currentTile = TileRegistry::GetTile(selectedTileId_);
             if (!currentTile || currentTile->layer != currentLayer_) {
                 selectedTileId_ = 10;
             }
         }
-    }
 
-    ImGui::Separator();
-
-    // --- ツール切り替え ---
-    ImGui::Text("Tools:");
-    if (ImGui::RadioButton("Pen (P)", currentMode_ == ToolMode::Pen)) currentMode_ = ToolMode::Pen;
-    ImGui::SameLine();
-    if (ImGui::RadioButton("Bucket (B)", currentMode_ == ToolMode::Bucket)) currentMode_ = ToolMode::Bucket;
-    ImGui::SameLine();
-    if (ImGui::RadioButton("Rect (R)", currentMode_ == ToolMode::Rectangle)) currentMode_ = ToolMode::Rectangle;
-
-    // キーボードショートカットでツール切り替え
-    if (!ImGui::GetIO().WantCaptureKeyboard) {
-        if (Input().TriggerKey(DIK_P)) currentMode_ = ToolMode::Pen;
-        if (Input().TriggerKey(DIK_B)) currentMode_ = ToolMode::Bucket;
-        if (Input().TriggerKey(DIK_R)) currentMode_ = ToolMode::Rectangle;
-    }
-
-    ImGui::Separator();
-
-    // パレット表示（現在のレイヤーに応じてフィルタリング）
-    ImGui::Text("Select Tile:");
-    const auto& tiles = TileRegistry::GetAllTiles();
-    int buttonsPerRow = 4;
-    int count = 0;
-
-    for (const auto& tile : tiles) {
-        // Airは常に表示、それ以外は現在のレイヤーに一致するもののみ表示
-        if (tile.id == 0 || tile.layer == currentLayer_) {
-            std::string label = tile.name + "##" + std::to_string(tile.id);
-            if (ImGui::RadioButton(label.c_str(), selectedTileId_ == tile.id)) {
-                selectedTileId_ = tile.id;
+        if (!ImGui::GetIO().WantCaptureKeyboard) {
+            if (Input().TriggerKey(DIK_1)) {
+                currentLayer_ = TileLayer::Block;
+                const TileDefinition* currentTile = TileRegistry::GetTile(selectedTileId_);
+                if (!currentTile || currentTile->layer != currentLayer_) {
+                    selectedTileId_ = 1;
+                }
             }
-            count++;
-            if (count % buttonsPerRow != 0) ImGui::SameLine();
+            if (Input().TriggerKey(DIK_2)) {
+                currentLayer_ = TileLayer::Decoration;
+                const TileDefinition* currentTile = TileRegistry::GetTile(selectedTileId_);
+                if (!currentTile || currentTile->layer != currentLayer_) {
+                    selectedTileId_ = 10;
+                }
+            }
         }
+
+        ImGui::Separator();
+
+        // ツール選択
+        ImGui::Text("Tools:");
+        if (ImGui::RadioButton("Pen (P)", currentMode_ == ToolMode::Pen)) currentMode_ = ToolMode::Pen;
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Bucket (B)", currentMode_ == ToolMode::Bucket)) currentMode_ = ToolMode::Bucket;
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Rect (R)", currentMode_ == ToolMode::Rectangle)) currentMode_ = ToolMode::Rectangle;
+
+        if (!ImGui::GetIO().WantCaptureKeyboard) {
+            if (Input().TriggerKey(DIK_P)) currentMode_ = ToolMode::Pen;
+            if (Input().TriggerKey(DIK_B)) currentMode_ = ToolMode::Bucket;
+            if (Input().TriggerKey(DIK_R)) currentMode_ = ToolMode::Rectangle;
+        }
+
+        ImGui::Separator();
+
+        // タイルパレット
+        ImGui::Text("Select Tile:");
+        const auto& tiles = TileRegistry::GetAllTiles();
+        int buttonsPerRow = 4;
+        int count = 0;
+
+        for (const auto& tile : tiles) {
+            if (tile.id == 0 || tile.layer == currentLayer_) {
+                std::string label = tile.name + "##" + std::to_string(tile.id);
+                if (ImGui::RadioButton(label.c_str(), selectedTileId_ == tile.id)) {
+                    selectedTileId_ = tile.id;
+                }
+                count++;
+                if (count % buttonsPerRow != 0) ImGui::SameLine();
+            }
+        }
+        if (count % buttonsPerRow != 0) ImGui::NewLine();
+
+        ImGui::Separator();
+
+        // タイル編集の入力処理
+        HandleInput(mapData, camera);
     }
-    if (count % buttonsPerRow != 0) ImGui::NewLine();
-
-    ImGui::Separator();
-
-    // マウス入力処理
-    HandleInput(mapData, camera);
+    // --- オブジェクト配置モード ---
+    else {
+        DrawObjectPalette();
+        ImGui::Separator();
+        DrawObjectList(mapData);
+        ImGui::Separator();
+        HandleObjectMode(mapData, camera);
+    }
 
     ImGui::End();
+}
+
+void MapChipEditor::DrawObjectPalette() {
+    ImGui::Text("Select Object Type:");
+    const auto& objectTypes = ObjectRegistry::GetAllObjectTypes();
+
+    for (const auto& objType : objectTypes) {
+        std::string label = objType.name + "##obj" + std::to_string(objType.id);
+        if (ImGui::RadioButton(label.c_str(), selectedObjectTypeId_ == objType.id)) {
+            selectedObjectTypeId_ = objType.id;
+        }
+    }
+}
+
+void MapChipEditor::DrawObjectList(MapData& mapData) {
+    ImGui::Text("Placed Objects (%d):", (int)mapData.GetObjectSpawns().size());
+
+    const auto& spawns = mapData.GetObjectSpawns();
+    for (size_t i = 0; i < spawns.size(); ++i) {
+        const auto& spawn = spawns[i];
+        const auto* objType = ObjectRegistry::GetObjectType(spawn.objectTypeId);
+        std::string name = objType ? objType->name : "Unknown";
+
+        ImGui::PushID((int)i);
+
+        // 選択状態の表示
+        bool isSelected = (selectedObjectIndex_ == (int)i);
+        if (isSelected) {
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 0.0f, 1.0f));
+        }
+
+        ImGui::Text("%d: %s (%.1f, %.1f)", (int)i, name.c_str(), spawn.position.x, spawn.position.y);
+
+        if (isSelected) {
+            ImGui::PopStyleColor();
+        }
+
+        ImGui::SameLine();
+        if (ImGui::Button("Delete")) {
+            mapData.RemoveObjectSpawn(i);
+            selectedObjectIndex_ = -1;
+        }
+
+        ImGui::PopID();
+    }
+}
+
+void MapChipEditor::HandleObjectMode(MapData& mapData, Camera2D& camera) {
+    if (ImGui::GetIO().WantCaptureMouse) return;
+
+    // マウス位置取得
+    int mouseX, mouseY;
+    Novice::GetMousePosition(&mouseX, &mouseY);
+    Vector2 worldPos = camera.ScreenToWorld({ (float)mouseX, (float)mouseY });
+
+    // 配置済みオブジェクトの描画（マップ上にアイコン表示）
+    const auto& spawns = mapData.GetObjectSpawns();
+    for (size_t i = 0; i < spawns.size(); ++i) {
+        const auto& spawn = spawns[i];
+
+        // アイコンサイズ（32x32ピクセル）
+        const float iconSize = 32.0f;
+        Vector2 iconWorldMin = { spawn.position.x - iconSize / 2.0f, spawn.position.y - iconSize / 2.0f };
+        Vector2 iconWorldMax = { spawn.position.x + iconSize / 2.0f, spawn.position.y + iconSize / 2.0f };
+
+        Vector2 screenMin = camera.WorldToScreen(iconWorldMin);
+        Vector2 screenMax = camera.WorldToScreen(iconWorldMax);
+
+        // アイコンの色（選択中は黄色、それ以外は青）
+        unsigned int color = (selectedObjectIndex_ == (int)i) ? 0xFFFF00FF : 0x0000FFFF;
+
+        Novice::DrawBox(
+            (int)screenMin.x, (int)screenMin.y,
+            (int)(screenMax.x - screenMin.x), (int)(screenMax.y - screenMin.y),
+            0.0f, color, kFillModeWireFrame
+        );
+
+        // 中心に小さい点
+        Novice::DrawBox(
+            (int)camera.WorldToScreen(spawn.position).x - 2,
+            (int)camera.WorldToScreen(spawn.position).y - 2,
+            4, 4, 0.0f, color, kFillModeSolid
+        );
+    }
+
+    // 左クリック：オブジェクト配置
+    if (Novice::IsTriggerMouse(0)) {
+        // 既存のオブジェクトをクリックしたか判定
+        bool clickedExisting = false;
+        const float clickRadius = 16.0f;
+
+        for (size_t i = 0; i < spawns.size(); ++i) {
+            float dx = worldPos.x - spawns[i].position.x;
+            float dy = worldPos.y - spawns[i].position.y;
+            float distSq = dx * dx + dy * dy;
+
+            if (distSq < clickRadius * clickRadius) {
+                selectedObjectIndex_ = (int)i;
+                clickedExisting = true;
+                break;
+            }
+        }
+
+        // 既存をクリックしていなければ新規配置
+        if (!clickedExisting) {
+            const auto* objType = ObjectRegistry::GetObjectType(selectedObjectTypeId_);
+            std::string tag = objType ? objType->tag : "";
+            mapData.AddObjectSpawn(selectedObjectTypeId_, worldPos, tag);
+            selectedObjectIndex_ = -1;
+            Novice::ConsolePrintf("[MapEditor] Placed object type %d at (%.1f, %.1f)\n",
+                selectedObjectTypeId_, worldPos.x, worldPos.y);
+        }
+    }
+
+    // 右クリック：選択解除
+    if (Novice::IsTriggerMouse(1)) {
+        selectedObjectIndex_ = -1;
+    }
+
+    // Deleteキー：選択中のオブジェクト削除
+    if (selectedObjectIndex_ >= 0 && Input().TriggerKey(DIK_DELETE)) {
+        mapData.RemoveObjectSpawn(selectedObjectIndex_);
+        selectedObjectIndex_ = -1;
+    }
 }
 
 void MapChipEditor::HandleInput(MapData& mapData, Camera2D& camera) {

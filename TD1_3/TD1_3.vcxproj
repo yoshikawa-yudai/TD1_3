@@ -163,6 +163,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="MapChip.h" />
     <ClInclude Include="MapChipEditor.h" />
     <ClInclude Include="MapData.h" />
+    <ClInclude Include="ObjectRegistry.h" />
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="PrototypeSurvivalScene.h" />
     <ClInclude Include="Rigidbody2D.hpp" />

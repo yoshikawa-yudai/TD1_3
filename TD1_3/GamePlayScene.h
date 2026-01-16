@@ -7,7 +7,7 @@
 
 #include "MapData.h"
 #include "MapChip.h"
-#include "MapChipEditor.h" // ファイル名がMapEditor.hならそちらに合わせて
+#include "MapChipEditor.h"
 #include "PhysicsManager.h"
 
 #include <memory>
@@ -29,6 +29,9 @@ private:
     void InitializeCamera();
     void InitializeObjects();
     void InitializeBackground();
+
+    void SpawnObjectFromData(const ObjectSpawnInfo& spawn);
+
 
     SceneManager& manager_;
     float fade_ = 0.0f;

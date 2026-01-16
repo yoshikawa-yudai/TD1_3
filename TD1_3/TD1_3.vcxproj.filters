@@ -95,9 +95,6 @@
     <Filter Include="KamataEngine\Source\library\2D\Particle">
       <UniqueIdentifier>{a6f8e870-45b6-4068-a2f1-ab24ce3be498}</UniqueIdentifier>
     </Filter>
-    <Filter Include="KamataEngine\Source\library\2D\Effect">
-      <UniqueIdentifier>{3c214814-9fc5-485b-93fa-667b00dab85b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="KamataEngine\Source\Shared">
       <UniqueIdentifier>{5faa254f-c393-4f48-ba8a-971af779a6d9}</UniqueIdentifier>
     </Filter>
@@ -157,6 +154,9 @@
     </Filter>
     <Filter Include="KamataEngine\Source\library\MapChipSystem\MapChipEditor">
       <UniqueIdentifier>{9ad2e4fb-ed92-49c8-82d5-16857469a76b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KamataEngine\Source\library\2D\Draw\Effect">
+      <UniqueIdentifier>{3c214814-9fc5-485b-93fa-667b00dab85b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -243,7 +243,7 @@
       <Filter>KamataEngine\Source\Game\DebugWindow</Filter>
     </ClCompile>
     <ClCompile Include="Effect.cpp">
-      <Filter>KamataEngine\Source\library\2D\Effect</Filter>
+      <Filter>KamataEngine\Source\library\2D\Draw\Effect</Filter>
     </ClCompile>
     <ClCompile Include="ParticleManager.cpp">
       <Filter>KamataEngine\Source\library\2D\Particle</Filter>
@@ -470,7 +470,7 @@
       <Filter>KamataEngine\Source\Game\DebugWindow</Filter>
     </ClInclude>
     <ClInclude Include="Effect.h">
-      <Filter>KamataEngine\Source\library\2D\Effect</Filter>
+      <Filter>KamataEngine\Source\library\2D\Draw\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>KamataEngine\Source\library\2D\Particle</Filter>
@@ -537,6 +537,9 @@
     </ClInclude>
     <ClInclude Include="PhysicsManager.h">
       <Filter>KamataEngine\Source\library\MapChipSystem\PhysicsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectRegistry.h">
+      <Filter>KamataEngine\Source\Game\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
