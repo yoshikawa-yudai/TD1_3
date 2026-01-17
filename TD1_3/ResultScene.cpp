@@ -150,6 +150,6 @@ void ResultScene::Draw() {
 
 	// ========== ボタン描画 ==========
 	if (fontReady_) {
-		buttonManager_.Draw(grHandleButton_, &font_, &text_);
+		buttonManager_.Draw();
 	}
 }

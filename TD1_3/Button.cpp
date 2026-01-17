@@ -74,32 +74,32 @@ void Button::Update(float deltaTime, bool isSelected) {
 	}
 }
 
-void Button::Draw(int textureHandle, FontAtlas* font, TextRenderer* textRenderer) {
+void Button::Draw() {
 	if (isImageButton_) {
 		// 画像ボタンの描画：選択状態に応じて切り替え
 		if (isSelected_) {
 			drawCompSelected_.DrawScreen();
 		}
 		else {
-			// 半透明描画をDrawComponent側に設定し描画後に元に戻す
+			// 半透明で描画
 			drawCompNormal_.SetBaseColor(0xFFFFFF99);
 			drawCompNormal_.DrawScreen();
 			drawCompNormal_.SetBaseColor(0xFFFFFFFF);
 		}
 	}
 	else {
-		// 既存のテキストボタン描画処理
-		textureHandle; // 未使用パラメータ回避
-
+		// テキストボタン：シンプルな矩形描画のみ
 		uint32_t fillColor = isSelected_ ? colorSelected_ : colorNormal_;
 
-		Vector2 scale = { easeT_, easeT_ };
-		float w = size_.x * std::lerp(scaleMin_, scaleMax_, Easing::EaseOutQuad(easeT_));
-		float h = size_.y * std::lerp(scaleMin_, scaleMax_, Easing::EaseOutQuad(easeT_));
+		float eased = Easing::EaseOutQuad(easeT_);
+		float scale = std::lerp(scaleMin_, scaleMax_, eased);
+		float w = size_.x * scale;
+		float h = size_.y * scale;
 
 		float left = position_.x - w * anchor_.x;
 		float top = position_.y - h * anchor_.y;
 
+		// 塗りつぶし
 		Novice::DrawBox(
 			static_cast<int>(left),
 			static_cast<int>(top),
@@ -110,7 +110,8 @@ void Button::Draw(int textureHandle, FontAtlas* font, TextRenderer* textRenderer
 			kFillModeSolid
 		);
 
-		uint32_t frameColor = isSelected_ ? colorFrameSelected_ : colorFrame_;
+		// 枠線
+		uint32_t frameColor = isSelected_ ? 0xFFFFFFFF : 0x888888FF;
 		Novice::DrawBox(
 			static_cast<int>(left),
 			static_cast<int>(top),
@@ -121,17 +122,12 @@ void Button::Draw(int textureHandle, FontAtlas* font, TextRenderer* textRenderer
 			kFillModeWireFrame
 		);
 
-		if (font && textRenderer) {
-			float labelScale = isSelected_ ? textScaleSelected_ : textScale_;
-			uint32_t textColor = isSelected_ ? colorTextSelected_ : colorText_;
-
-			int textWidth = textRenderer->MeasureWidth(label_.c_str(), labelScale);
-			int textHeight = static_cast<int>(font->GetLineHeight() * labelScale);
-
-			int textX = static_cast<int>(left + (w - textWidth) * 0.5f);
-			int textY = static_cast<int>(top + (h - textHeight) * 0.5f);
-
-			textRenderer->DrawTextLabel(textX, textY, label_.c_str(), textColor, labelScale);
+		// ラベル（Noviceのデフォルトフォントで描画）
+		if (!label_.empty()) {
+			// 簡易的な中央揃え（目安）
+			int textX = static_cast<int>(position_.x - label_.length() * 3);
+			int textY = static_cast<int>(position_.y - 8);
+			Novice::ScreenPrintf(textX, textY, "%s", label_.c_str());
 		}
 	}
 }

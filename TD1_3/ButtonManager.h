@@ -51,10 +51,7 @@ public:
 	/// <summary>
 	/// 描画処理
 	/// </summary>
-	/// <param name="textureHandle">ボタンのテクスチャハンドル</param>
-	/// <param name="font">フォントアトラス</param>
-	/// <param name="textRenderer">テキストレンダラー</param>
-	void Draw(int textureHandle, FontAtlas* font, TextRenderer* textRenderer);
+	void Draw();
 
 	// ゲッター
 	int GetSelectedIndex() const { return selectedIndex_; }

@@ -28,7 +28,7 @@ public:
 	Button(const Vector2& position, const Vector2& size, int normalTexture, int selectedTexture, std::function<void()> callback);
 
 	void Update(float deltaTime, bool isSelected);
-	void Draw(int textureHandle, FontAtlas* font, TextRenderer* textRenderer);
+	void Draw();
 	void Execute();
 
 	// ゲッター

@@ -190,11 +190,7 @@ void TitleScene::Draw() {
 	drawCompLogo_.DrawScreen();
 
 	// ボタン描画
-	buttonManager_.Draw(
-		grHandleButton_,
-		&font_,
-		&text_
-	);
+	buttonManager_.Draw();
 
 	player_.Draw(Camera2D::GetInstance());
 

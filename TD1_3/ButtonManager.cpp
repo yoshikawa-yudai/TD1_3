@@ -151,8 +151,9 @@ void ButtonManager::HandlePadInput() {
 	}
 }
 
-void ButtonManager::Draw(int textureHandle, FontAtlas* font, TextRenderer* textRenderer) {
+void ButtonManager::Draw() {
 	for (auto& button : buttons_) {
-		button.Draw(textureHandle, font, textRenderer);
+		button.Draw();
 	}
 }
+

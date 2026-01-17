@@ -101,5 +101,5 @@ void PauseScene::Draw() {
 	Novice::DrawBox(0, 0, 1280, 720, 0.0f, 0x000000CC, kFillModeSolid);
 
 	// ボタン描画
-	buttonManager_->Draw(-1, nullptr, nullptr);
+	buttonManager_->Draw();
 }
