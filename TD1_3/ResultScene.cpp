@@ -128,12 +128,13 @@ void ResultScene::UpdateDrawComponents(float deltaTime) {
 }
 
 void ResultScene::Update(float dt, const char* keys, const char* pre) {
+	keys; pre; // 未使用
 
 	// 描画コンポーネントを更新
 	UpdateDrawComponents(dt);
 
 	// ボタンマネージャーを更新
-	buttonManager_.Update(dt, keys, pre, *Input().GetPad());
+	buttonManager_.Update(dt);
 }
 
 void ResultScene::Draw() {

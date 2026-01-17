@@ -111,6 +111,7 @@ void StageSelectScene::UpdateDrawComponents(float deltaTime) {
 }
 
 void StageSelectScene::Update(float dt, const char* keys, const char* pre) {
+	keys, pre; // 未使用
 	// 入力受付の遅延処理（秒単位）
 	if (inputDelayTimer_ > 0.0f) {
 		inputDelayTimer_ -= dt;
@@ -125,10 +126,10 @@ void StageSelectScene::Update(float dt, const char* keys, const char* pre) {
 	// 入力が有効な場合のみ処理
 	if (inputEnabled_) {
 		// ボタンマネージャーの更新
-		buttonManager_.Update(dt, keys, pre, *InputManager::GetInstance().GetPad());
+		buttonManager_.Update(dt);
 
 		// Escapeキーで戻る
-		if (!pre[DIK_ESCAPE] && keys[DIK_ESCAPE]) {
+		if (InputManager::GetInstance().TriggerKey(DIK_ESCAPE)) {
 			SoundManager::GetInstance().PlaySe(SeId::Back);
 			manager_.RequestTransition(SceneType::Title);
 		}
