@@ -145,7 +145,7 @@ void GamePlayScene::Update(float dt, const char* keys, const char* pre) {
 
 	if (openPause) {
 		Sound().PlaySe(SeId::Decide);
-		manager_.RequestPause();
+		manager_.RequestOpenPause();
 		return;
 	}
 

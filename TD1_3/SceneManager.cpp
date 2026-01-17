@@ -25,9 +25,9 @@ void SceneManager::Update(float dt, const char* keys, const char* pre) {
 	// Rキーで現在シーンを再生成（初期化）
 
 #ifdef _DEBUG
-	if (keys[DIK_R] && !pre[DIK_R]) {
+	/*if (keys[DIK_R] && !pre[DIK_R]) {
 		RequestTransition(currentSceneType_);
-	}
+	}*/
 #endif
 
 	InputManager::GetInstance().Update();
@@ -35,7 +35,7 @@ void SceneManager::Update(float dt, const char* keys, const char* pre) {
 	// オーバーレイがある場合はそちらを優先
 	if (!overlayScenes_.empty()) {
 		overlayScenes_.back()->Update(dt, keys, pre);
-		// オーバーレイ表示中は実際の切り替えは行わない（予約のみ）
+		// オーバーレイ表示中は実際の切り替えは行わない
 		return;
 	}
 
@@ -62,26 +62,32 @@ void SceneManager::RequestTransition(SceneType targetScene) {
 	pendingTransition_ = SceneTransition{ targetScene };
 }
 
-void SceneManager::RequestStage(int stageIndex) {
-	pendingStageIndex_ = stageIndex;
-	pendingTransition_ = SceneTransition{ StageIndexToSceneType(stageIndex) };
-}
-
-void SceneManager::RequestStageRestart() {
-	if (currentStageIndex_ >= 1 && currentStageIndex_ <= 12) {
-		RequestStage(currentStageIndex_);
+void SceneManager::RequestRetryScene() {
+	if (currentSceneType_ == SceneType::GamePlay) {
+		pendingTransition_ = SceneTransition{ SceneType::GamePlay };
 	}
 }
 
+//void SceneManager::RequestStage(int stageIndex) {
+//	pendingStageIndex_ = stageIndex;
+//	pendingTransition_ = SceneTransition{ StageIndexToSceneType(stageIndex) };
+//}
+//
+//void SceneManager::RequestStageRestart() {
+//	if (currentStageIndex_ >= 1 && currentStageIndex_ <= 12) {
+//		RequestStage(currentStageIndex_);
+//	}
+//}
 
-void SceneManager::RequestPause() {
+
+void SceneManager::RequestOpenPause() {
 	if (currentScene_) {
 		auto pauseScene = std::make_unique<PauseScene>(*this, *currentScene_, shared_);
 		PushOverlay(std::move(pauseScene));
 	}
 }
 
-void SceneManager::RequestPauseResume() {
+void SceneManager::RequestClosePause() {
 	PopOverlay();
 }
 
@@ -92,12 +98,6 @@ void SceneManager::RequestOpenSettings() {
 
 void SceneManager::RequestCloseSettings() {
 	PopOverlay();
-}
-
-void SceneManager::RequestResult(int stageIndex, int score) {
-	resultScore_ = score;
-	pendingStageIndex_ = stageIndex;
-	RequestTransition(SceneType::Result);
 }
 
 void SceneManager::PushOverlay(std::unique_ptr<IScene> overlay) {

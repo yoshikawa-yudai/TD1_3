@@ -130,20 +130,20 @@ void PauseScene::Update(float deltaTime, const char* keys, const char* pre) {
 	// ========================================
 	// 決定・キャンセル入力
 	// ========================================
-	bool decide = (pre[DIK_SPACE] == 0 && keys[DIK_SPACE]) ||
+	bool decide = (!pre[DIK_SPACE] && keys[DIK_SPACE]) ||
 		shared_.pad.Trigger(Pad::Button::A);
 
 	if (decide) {
 		shared_.PlayDecideSe();
 		switch (selected_) {
 		case 0: // 戻る
-			manager_.RequestPauseResume();
+			manager_.RequestClosePause();
 			return;
 		case 1: { // リスタート
 			manager_.Shared().StopAllBgm();
 			int idx = underlying_.GetStageIndex();
 			if (idx >= 0) {
-				manager_.RequestStageRestart();
+				manager_.RequestRetryScene();
 			}
 			else {
 				manager_.RequestTransition(SceneType::StageSelect);
@@ -165,7 +165,7 @@ void PauseScene::Update(float deltaTime, const char* keys, const char* pre) {
 		shared_.pad.Trigger(Pad::Button::B) ||
 		shared_.pad.Trigger(Pad::Button::Start)) {
 		shared_.PlayBackSe();
-		manager_.RequestPauseResume();
+		manager_.RequestClosePause();
 		return;
 	}
 

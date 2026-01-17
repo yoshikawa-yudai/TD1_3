@@ -30,18 +30,20 @@ public:
 	void RequestTransition(SceneType targetScene);
 	void RequestQuit() { shouldQuit_ = true; }
 
-	// ステージ関連の遷移
-	void RequestStage(int stageIndex); // Stage1～12への遷移
-	void RequestStageRestart(); // 現在のステージを再開
+	// リトライ
+	void RequestRetryScene();
 
-	// ポーズ関連
-	void RequestPause(); // ポーズ画面を開く
-	void RequestPauseResume(); // ポーズから復帰
+	// ======================
+	// ポーズシステム
+	// ======================
+	void RequestOpenPause(); // ポーズ画面を開く
+	void RequestClosePause(); // ポーズから復帰
+
+	// ======================
+	// 設定画面オーバーレイ
+	// ======================
 	void RequestOpenSettings(); // 設定画面を開く（オーバーレイ）
 	void RequestCloseSettings(); // 設定画面を閉じる
-
-	// リザルト
-	void RequestResult(int stageIndex, int score); // リザルト画面へ
 
 	// オーバーレイシーン管理（設定画面など）
 	void PushOverlay(std::unique_ptr<IScene> overlay);

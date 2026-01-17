@@ -64,15 +64,8 @@ void StageSelectScene::InitializeButtons() {
 
 	// ========== ボタンのコールバック ==========
 
-	// ステージ1へ遷移
-	auto goToStage1 = [&]() {
-		//shared_.lastPlayedStageIndex = 0;
-		manager_.RequestStage(1);
-		};
-
-	// ゲームプレイシーン（テスト用）
+	// ゲームプレイシーン
 	auto goToGamePlay = [&]() {
-		//shared_.lastPlayedStageIndex = 0;
 		manager_.RequestTransition(SceneType::GamePlay);
 		};
 
@@ -83,23 +76,15 @@ void StageSelectScene::InitializeButtons() {
 		};
 
 	// ========== ボタンを追加 ==========
-
 	buttonManager_.AddButton(
-		Vector2{ centerX, startY },
-		buttonSize,
-		"STAGE 1",
-		goToStage1
-	);
-
-	buttonManager_.AddButton(
-		Vector2{ centerX, startY + buttonSpacing },
+		Vector2{ centerX, startY},
 		buttonSize,
 		"GAMEPLAY TEST",
 		goToGamePlay
 	);
 
 	buttonManager_.AddButton(
-		Vector2{ centerX, startY + buttonSpacing * 2 },
+		Vector2{ centerX, startY + buttonSpacing },
 		buttonSize,
 		"BACK TO TITLE",
 		backToTitle
