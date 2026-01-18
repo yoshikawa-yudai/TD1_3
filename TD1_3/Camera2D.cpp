@@ -250,7 +250,7 @@ void Camera2D::UpdateMatrices() {
 	}
 
 	// ビュー行列を作成（カメラのアフィン変換の逆行列）
-	Vector2 scale = { zoom_, zoom_ };
+	Vector2 scale = {1.0f / zoom_, 1.0f / zoom_ };
 	Matrix3x3 cameraAffine = AffineMatrix2D::MakeAffine(scale, rotation_, finalPosition);
 	viewMatrix_ = Matrix3x3::Inverse(cameraAffine);
 
