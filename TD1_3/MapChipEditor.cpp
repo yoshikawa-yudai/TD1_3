@@ -18,7 +18,8 @@ namespace {
     }
 }
 
-void MapChipEditor::Initialize() {
+void MapChipEditor::Initialize(MapManager* manager) {
+	mapManager_ = manager;
     TileRegistry::Initialize();
     ObjectRegistry::Initialize();
     selectedTileId_ = 1;
@@ -414,6 +415,10 @@ void MapChipEditor::HandleInput(MapData& mapData, Camera2D& camera) {
                     strokeCache_[key] = currentId; // 元IDを保存
                 }
                 mapData.SetTile(col, row, 0, currentLayer_); // 削除
+				// MapManagerへの通知
+                if(mapManager_) {
+                    mapManager_->OnTileChanged(col, row, currentLayer_);
+                }
             }
         }
 
@@ -442,6 +447,7 @@ void MapChipEditor::HandleInput(MapData& mapData, Camera2D& camera) {
         }
     }
 
+
     // ドラッグ中（ペンのみ、矩形プレビューは上で描画済み）
     if (Novice::IsPressMouse(0) && isDragging_) {
         if (currentMode_ == ToolMode::Pen && isInside) {
@@ -452,6 +458,11 @@ void MapChipEditor::HandleInput(MapData& mapData, Camera2D& camera) {
                     strokeCache_[key] = currentId;
                 }
                 mapData.SetTile(col, row, selectedTileId_, currentLayer_);
+
+                if (mapManager_) {
+                    mapManager_->OnTileChanged(col, row, currentLayer_);
+                }
+               
             }
         }
     }
@@ -463,6 +474,10 @@ void MapChipEditor::HandleInput(MapData& mapData, Camera2D& camera) {
         if (currentMode_ == ToolMode::Rectangle) {
             // 矩形を適用
             ToolRectangleApply(mapData, col, row);
+            // MapManagerへの通知
+            if (mapManager_) {
+                mapManager_->OnTileChanged(col, row, currentLayer_);
+            }
         }
 
         CommitStroke(mapData);
@@ -519,6 +534,12 @@ void MapChipEditor::ToolBucket(MapData& mapData, int startCol, int startRow, int
                     if (strokeCache_.find(nKey) == strokeCache_.end()) {
                         strokeCache_[nKey] = targetId; // 元の色を記録
                         mapData.SetTile(nx, ny, newId, currentLayer_); // 塗る
+
+                        // MapManagerへの通知
+						if (mapManager_) {
+							mapManager_->OnTileChanged(nx, ny, currentLayer_);
+						}
+
                         q.push({ nx, ny }); // 次の探索へ
                     }
                 }
@@ -597,6 +618,11 @@ void MapChipEditor::ToolRectangleApply(MapData& mapData, int endCol, int endRow)
                     strokeCache_[key] = currentId;
                 }
                 mapData.SetTile(x, y, selectedTileId_, currentLayer_);
+
+				// MapManagerへの通知
+                if (mapManager_) {
+                    mapManager_->OnTileChanged(x, y, currentLayer_);
+                }
             }
         }
     }
@@ -638,6 +664,7 @@ void MapChipEditor::ExecuteUndo(MapData& mapData) {
     // 変更を「元に戻す（prevIdにする）」
     for (const auto& log : cmd.logs) {
         mapData.SetTile(log.col, log.row, log.prevId, log.layer);
+        mapManager_->OnTileChanged(log.col, log.row, log.layer);
     }
 
     // Redoスタックに積む
@@ -654,6 +681,7 @@ void MapChipEditor::ExecuteRedo(MapData& mapData) {
     // 変更を「やり直す（newIdにする）」
     for (const auto& log : cmd.logs) {
         mapData.SetTile(log.col, log.row, log.newId, log.layer);
+        mapManager_->OnTileChanged(log.col, log.row, log.layer);
     }
 
     // Undoスタックに戻す

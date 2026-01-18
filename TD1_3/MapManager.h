@@ -19,8 +19,11 @@ public:
     // 描画
     void Draw(const Camera2D& camera);
 
-    // 特定座標のタイルに干渉（桜井氏流：手応えの演出用フック）
+    // 特定座標のタイルに干渉
     void InteractionTile(const Vector2& worldPos);
+
+	// タイル変更通知(Editorで使用)
+    void OnTileChanged(int x, int y, TileLayer layer);
 
 private:
     std::vector<std::unique_ptr<TileInstance>> dynamicTiles_;

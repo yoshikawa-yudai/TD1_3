@@ -6,6 +6,7 @@
 #include <imgui.h>
 #include <vector>
 #include <map>
+#include "MapManager.h"
 
 // 1マスの変更履歴
 struct TileChangeLog {
@@ -31,14 +32,18 @@ struct EditCommand {
 
 class MapChipEditor {
 public:
-    void Initialize();
+    void Initialize(MapManager* manager);
     void UpdateAndDrawImGui(MapData& mapData, Camera2D& camera);
     ToolMode GetCurrentTool() const { return currentMode_; }
+
+	void SetMapManager(MapManager* manager) { mapManager_ = manager; }
 
 private:
     int selectedTileId_ = 1;
     ToolMode currentMode_ = ToolMode::Pen;
     TileLayer currentLayer_ = TileLayer::Block;
+
+	MapManager* mapManager_ = nullptr;
 
     // オブジェクトモード用
     int selectedObjectTypeId_ = 100;  // デフォルト: PlayerStart

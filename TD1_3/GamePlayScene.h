@@ -40,7 +40,7 @@ private:
     //  マップシステム
 	// ================================
     MapChipEditor mapEditor_;
-    MapData mapData_;
+    //MapData mapData_;
     MapChip mapChip_;// 静的マップチップ描画
 	MapManager mapManager_;// 動的タイル管理
 

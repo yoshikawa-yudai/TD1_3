@@ -63,3 +63,36 @@ void MapManager::InteractionTile(const Vector2& worldPos) {
         }
     }
 }
+
+void MapManager::OnTileChanged(int col, int row, TileLayer layer) {
+    auto& mapData = MapData::GetInstance();
+    float tileSize = mapData.GetTileSize();
+
+    // 1. 座標の特定（タイルの中心点）
+    Vector2 targetPos = {
+        col * tileSize + tileSize * 0.5f,
+        row * tileSize + tileSize * 0.5f
+    };
+
+    // 2. 削除処理：リストから指定座標に一致するインスタンスを探して削除
+    // std::remove_if を使うのが、スマートポインタのリスト操作として最も合理的で高速です
+    dynamicTiles_.erase(
+        std::remove_if(dynamicTiles_.begin(), dynamicTiles_.end(),
+            [&](const std::unique_ptr<TileInstance>& tile) {
+                Vector2 p = tile->GetWorldPos();
+                // 浮動小数点の誤差が心配な場合は、0.1f程度の誤差を許容して判定します
+                return (std::abs(p.x - targetPos.x) < 0.1f && std::abs(p.y - targetPos.y) < 0.1f);
+            }),
+        dynamicTiles_.end()
+    );
+
+    // 3. 再生成（削除だけの場合は、ここでの ID チェックで終了します）
+    int id = mapData.GetTile(col, row, layer);
+    if (id == 0) return; // IDが0（空気）なら、削除だけで終了
+
+    const TileDefinition* def = TileRegistry::GetTile(id);
+    if (def && def->renderMode == RenderMode::Component) {
+        dynamicTiles_.push_back(std::make_unique<TileInstance>(*def, targetPos));
+        dynamicTiles_.back()->OnHit(); // 置いた瞬間のリアクション
+    }
+}

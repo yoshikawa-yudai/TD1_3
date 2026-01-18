@@ -149,14 +149,22 @@ std::vector<std::vector<int>>* MapData::GetLayerDataMutable(TileLayer layer) {
 }
 
 int MapData::GetTile(int col, int row, TileLayer layer) const {
-    if (row < 0 || row >= height_ || col < 0 || col >= width_) {
+    // 範囲チェック
+    if (col < 0 || col >= width_ || row < 0 || row >= height_) {
         return 0;
     }
-    const auto* data = GetLayerData(layer);
-    if (data && !data->empty()) {
-        return (*data)[row][col];
+
+    // レイヤーごとに分岐
+    switch (layer) {
+    case TileLayer::Block:
+        return tilesBlock_[row][col];
+    case TileLayer::Decoration:
+        return tilesDecoration_[row][col];
+    case TileLayer::Background:
+        return tilesBackground_[row][col];
+    default:
+        return 0;
     }
-    return 0;
 }
 
 void MapData::SetTile(int col, int row, int tileID, TileLayer layer) {

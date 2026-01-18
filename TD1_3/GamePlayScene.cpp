@@ -35,18 +35,22 @@ void GamePlayScene::Initialize() {
 	player_ = nullptr;
 	worldOrigin_ = nullptr;
 
-	// --- マップシステムの初期化 ---
-		// 1. エディタ初期化（タイル定義のロード）
-	mapEditor_.Initialize();
 
-	// 2. マップデータ読み込み
-	mapData_.Load("./Resources/data/stage1.json");
+	// シングルトンを使う
+	auto& mapData = MapData::GetInstance();
+	mapData.Load("./Resources/data/stage1.json");
+
+	// --- マップシステムの初期化 ---
+	// 1. エディタ初期化（タイル定義のロード）
+	mapEditor_.Initialize(&mapManager_);
 
 	// 3. マップ描画クラスの初期化
 	mapChip_.Initialize();
 
 	// 4. マップマネージャー初期化
 	mapManager_.Initialize();
+
+	mapEditor_.SetMapManager(&mapManager_);
 
 	InitializeCamera();
 	InitializeObjects(); // ここでObject生成（マップデータから自動生成）
@@ -67,8 +71,9 @@ void GamePlayScene::InitializeCamera() {
 }
 
 void GamePlayScene::InitializeObjects() {
-	// MapDataからオブジェクトスポーン情報を取得
-	const auto& spawns = mapData_.GetObjectSpawns();
+	// シングルトンを使う
+	auto& mapData = MapData::GetInstance();
+	const auto& spawns = mapData.GetObjectSpawns();
 
 	for (const auto& spawn : spawns) {
 		SpawnObjectFromData(spawn);
@@ -192,9 +197,9 @@ void GamePlayScene::Update(float dt, const char* keys, const char* pre) {
 	objectManager_.Update(dt);
 
 	// 当たり判定（物理演算)
-	// オブジェクトが移動した後、マップとのめり込みを解消
+	auto& mapData = MapData::GetInstance();
 	if (player_) {
-		PhysicsManager::ResolveMapCollision(player_, mapData_);
+		PhysicsManager::ResolveMapCollision(player_, mapData);
 	}
 
 	// GameObjectManager でオブジェクト更新（移動処理）
@@ -228,8 +233,10 @@ void GamePlayScene::Draw() {
 	}
 
 	// --- マップ描画 ---
-	// オブジェクトより奥（背景より手前）に描画
-	mapChip_.Draw(*camera_, mapData_);
+	  // シングルトンを使う
+	auto& mapData = MapData::GetInstance();
+	mapChip_.Draw(*camera_, mapData);
+
 	// 動的タイル描画
 	mapManager_.Draw(*camera_);
 
@@ -241,9 +248,9 @@ void GamePlayScene::Draw() {
 	}
 
 #ifdef _DEBUG
-	// --- エディタの更新（ImGui）---
-	// ゲーム中でも編集できるようにする
-	mapEditor_.UpdateAndDrawImGui(mapData_, *camera_);
+
+	// エディタにもシングルトンを渡す
+	mapEditor_.UpdateAndDrawImGui(mapData, *camera_);
 
 	if (debugWindow_) {
 		debugWindow_->DrawDebugGui();
