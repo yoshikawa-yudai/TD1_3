@@ -17,15 +17,33 @@ enum class TileType {
 	AutoTile    // オートタイル
 };
 
+// 描画の仕組みを定義
+enum class RenderMode {
+	Simple,      // MapChipでの描画（高速・軽量）
+	Component    // DrawComponentを使用（アニメーション・エフェクト・揺れ）
+};
+
+// アニメーションの詳細設定用
+struct TileAnimConfig {
+	bool isAnimated = false; // アニメーションするか
+	int divX = 1;            // 横分割
+	int divY = 1;            // 縦分割
+	int totalFrames = 1;     // 総フレーム数
+	float speed = 0.0f;      // 再生速度
+	bool isLoop = true;      // ループするか
+};
+
 struct TileDefinition {
 	int id;                 // ID
 	std::string name;       // エディタ表示名
 	TextureId textureId;    // TextureManagerで使うID
 	TileType type;          // 種類
 	bool isSolid;           // 当たり判定
-
 	TileLayer layer;     // 所属するレイヤー
 	Vector2 drawOffset; // 描画オフセット
+
+	RenderMode renderMode; // 描画モード(MapChipかComponentか)
+	TileAnimConfig animConfig; // アニメーション設定
 };
 
 class TileRegistry {
@@ -59,8 +77,8 @@ public:
 			TileType::AutoTile,
 			true,
 			TileLayer::Block,
-			{0.0f, 0.0f}
-
+			{0.0f, 0.0f},
+			RenderMode::Simple,{}
 			});
 
 		// ID:2 鉄ブロック
@@ -70,20 +88,25 @@ public:
 			TileType::Solid,
 			true,
 			TileLayer::Block,
-			{0.0f, 0.0f}
+			{0.0f, 0.0f},
+			RenderMode::Simple,{}
 			});
 
 		// --- Decoration Layer (装飾) ---
 		// ID:10 草 (Decoration)
 		tiles_.push_back({
-			10, "Grass", TextureId::Deco_Grass, TileType::Solid, false, // 当たり判定なし
-			TileLayer::Decoration, {0.0f, 8.0f} // オフセットで位置微調整
+			10, "Grass", TextureId::Deco_GrassAnim, TileType::Solid, false, // 当たり判定なし
+			TileLayer::Decoration, {0.0f, 8.0f}, // オフセットで位置微調整
+			RenderMode::Component,
+			{ true, 8, 1, 8, 0.15f }// アニメーション設定
 			});
 
 		// ID:11 看板 (Decoration)
 		tiles_.push_back({
 			11, "Sign", TextureId::Deco_Scrap, TileType::Solid, false,
-			TileLayer::Decoration, {0.0f, 0.0f}
+			TileLayer::Decoration, {0.0f, 0.0f},
+			RenderMode::Component,
+			{ false, 1, 1, 1, 0.0f } // アニメーションなし
 			});
 
 		// --- Object Layer (配置物) ---

@@ -116,6 +116,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="MapChip.cpp" />
     <ClCompile Include="MapChipEditor.cpp" />
     <ClCompile Include="MapData.cpp" />
+    <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="ObjectRegistry.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="PrototypeSurvivalScene.cpp" />
@@ -147,6 +148,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="SurvivalObjects.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="TileInstance.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="UiDrawComponent.cpp" />
     <ClCompile Include="Vector2.cpp" />
@@ -163,6 +165,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="MapChip.h" />
     <ClInclude Include="MapChipEditor.h" />
     <ClInclude Include="MapData.h" />
+    <ClInclude Include="MapManager.h" />
     <ClInclude Include="ObjectRegistry.h" />
     <ClInclude Include="ObjectSpawnInfo.h" />
     <ClInclude Include="PhysicsManager.h" />
@@ -228,6 +231,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="SurvivalObjects.h" />
     <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="TileInstance.h" />
     <ClInclude Include="TileRegistry.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Transform2D.h" />

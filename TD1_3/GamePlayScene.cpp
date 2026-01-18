@@ -45,6 +45,9 @@ void GamePlayScene::Initialize() {
 	// 3. マップ描画クラスの初期化
 	mapChip_.Initialize();
 
+	// 4. マップマネージャー初期化
+	mapManager_.Initialize();
+
 	InitializeCamera();
 	InitializeObjects(); // ここでObject生成（マップデータから自動生成）
 	InitializeBackground();
@@ -72,17 +75,16 @@ void GamePlayScene::InitializeObjects() {
 	}
 
 	// Playerが生成されていない場合はデフォルト位置に配置
-	/*if (!player_) {
-		Novice::ConsolePrintf("[GamePlayScene] No player spawn found, using default position\n");
+	if (!player_) {
 		player_ = objectManager_.Spawn<Player>(nullptr, "Player");
-		player_->SetPosition({ 640.0f, 560.0f });
-	}*/
+		player_->SetPosition({ 12000.0f, 12000.0f });
+	}
 
 	// WorldOriginが見つからない場合はデフォルト位置に生成
 	if (!worldOrigin_) {
 		Novice::ConsolePrintf("[GamePlayScene] No WorldOrigin found, creating at default position\n");
 		worldOrigin_ = objectManager_.Spawn<WorldOrigin>(nullptr,"WorldOrigin");
-		worldOrigin_->SetPosition({ 640.0f, 360.0f });
+		worldOrigin_->SetPosition({ 12000.0f, 12000.0f });
 	}
 
 	// カメラ追従設定
@@ -183,6 +185,9 @@ void GamePlayScene::Update(float dt, const char* keys, const char* pre) {
 	}
 #endif
 
+	// 動的タイルの更新(カリングとアニメーション更新)
+	mapManager_.Update(dt,*camera_);
+
 	// GameObjectManager 経由で更新
 	objectManager_.Update(dt);
 
@@ -225,6 +230,8 @@ void GamePlayScene::Draw() {
 	// --- マップ描画 ---
 	// オブジェクトより奥（背景より手前）に描画
 	mapChip_.Draw(*camera_, mapData_);
+	// 動的タイル描画
+	mapManager_.Draw(*camera_);
 
 	particleManager_->Draw(*camera_);
 
@@ -233,11 +240,11 @@ void GamePlayScene::Draw() {
 		objectManager_.Draw(*camera_);
 	}
 
+#ifdef _DEBUG
 	// --- エディタの更新（ImGui）---
 	// ゲーム中でも編集できるようにする
 	mapEditor_.UpdateAndDrawImGui(mapData_, *camera_);
 
-#ifdef _DEBUG
 	if (debugWindow_) {
 		debugWindow_->DrawDebugGui();
 		debugWindow_->DrawCameraDebugWindow(camera_.get());

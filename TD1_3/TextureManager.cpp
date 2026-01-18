@@ -52,6 +52,8 @@ void TextureManager::LoadResources() {
 	textureResources_[static_cast<int>(TextureId::Deco_Grass)] =
 		Novice::LoadTexture("./Resources/images/mapChip/decoration/gras.png");
 
+	textureResources_[static_cast<int>(TextureId::Deco_GrassAnim)] =
+		Novice::LoadTexture("./Resources/images/mapChip/decoration/grass_anim.png");
 
 	// =========Background ==========
 	{

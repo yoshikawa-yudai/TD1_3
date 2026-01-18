@@ -6,6 +6,9 @@
 #include "Camera2D.h"
 #include "TileRegistry.h"
 
+/// <summary>
+/// 静的なマップチップ描画クラス
+/// </summary>
 class MapChip {
 public:
     MapChip();

@@ -5,6 +5,7 @@
 #include "MapChipEditor.h"
 #include "MapData.h"
 #include "MapChip.h"
+#include "MapManager.h"
 #include "Background.h"
 #include <memory>
 #include <vector>
@@ -35,10 +36,13 @@ private:
     // --- カメラ ---
     std::unique_ptr<Camera2D> camera_;
 
-    // --- マップシステム ---
+    // ================================
+    //  マップシステム
+	// ================================
     MapChipEditor mapEditor_;
     MapData mapData_;
-    MapChip mapChip_;
+    MapChip mapChip_;// 静的マップチップ描画
+	MapManager mapManager_;// 動的タイル管理
 
     // --- 背景 ---
     std::vector<std::unique_ptr<Background>> background_;

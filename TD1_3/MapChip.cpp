@@ -214,6 +214,9 @@ void MapChip::DrawLayer(Camera2D& camera, TileLayer layer) {
 			const TileDefinition* def = TileRegistry::GetTile(tileID);
 			if (!def) continue;
 
+			// Componentモード（演出用）はMapManagerが描画するため、ここではスキップ
+			if (def->renderMode == RenderMode::Component) continue;
+
 			// 3. テクスチャハンドル取得
 			const auto it = textureCache_.find(tileID);
 			if (it == textureCache_.end()) continue;

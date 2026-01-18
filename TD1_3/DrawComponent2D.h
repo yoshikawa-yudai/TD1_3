@@ -33,6 +33,18 @@ public:
 		float speed, bool isLoop = true);
 
 	/// <summary>
+	/// アニメーション用コンストラクタ(TextureId使用)
+	/// </summary>
+	/// <param name="textureId">TextureId</param>
+	/// <param name="divX">横分割数</param>
+	/// <param name="divY">縦分割数</param>
+	/// <param name="totalFrames">総フレーム数</param>
+	/// <param name="speed">アニメーション速度（秒/フレーム）</param>
+	/// <param name="isLoop">ループ再生するか</param>
+	DrawComponent2D(TextureId textureId, int divX, int divY, int totalFrames,
+		float speed, bool isLoop = true);
+
+	/// <summary>
 	/// 静止画用コンストラクタ
 	/// </summary>
 	/// <param name="graphHandle">画像ハンドル</param>
