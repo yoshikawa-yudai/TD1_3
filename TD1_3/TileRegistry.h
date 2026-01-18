@@ -31,6 +31,7 @@ struct TileAnimConfig {
 	int totalFrames = 1;     // 総フレーム数
 	float speed = 0.0f;      // 再生速度
 	bool isLoop = true;      // ループするか
+	Vector2 anchorPoint = { 0.5f, 0.5f };
 };
 
 struct TileDefinition {
@@ -98,7 +99,7 @@ public:
 			10, "Grass", TextureId::Deco_GrassAnim, TileType::Solid, false, // 当たり判定なし
 			TileLayer::Decoration, {0.0f, 8.0f}, // オフセットで位置微調整
 			RenderMode::Component,
-			{ true, 8, 1, 8, 0.15f }// アニメーション設定
+			{ true, 8, 1, 8, 0.15f,true,{0.5f, 0.8f} }// アニメーション設定
 			});
 
 		// ID:11 看板 (Decoration)

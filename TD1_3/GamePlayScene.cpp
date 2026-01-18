@@ -232,13 +232,18 @@ void GamePlayScene::Draw() {
 		background->Draw(*camera_);
 	}
 
-	// --- マップ描画 ---
-	  // シングルトンを使う
+
+	//========================
+	// マップ描画 
+	// =======================
+	// 動的タイル描画
+	mapManager_.Draw(*camera_);
+
+	// 静的タイル描画
 	auto& mapData = MapData::GetInstance();
 	mapChip_.Draw(*camera_, mapData);
 
-	// 動的タイル描画
-	mapManager_.Draw(*camera_);
+
 
 	particleManager_->Draw(*camera_);
 

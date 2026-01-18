@@ -19,6 +19,7 @@ public:
                 def.animConfig.speed,
                 def.animConfig.isLoop
             );
+			drawComp_->SetAnchorPoint(def.animConfig.anchorPoint);
 
             // アニメーションの開始時間をバラつかせて「自然さ」を出す
             if (def.animConfig.isAnimated) {

@@ -18,7 +18,7 @@
 SceneManager::SceneManager() {
 	shared_.LoadCommonTextures();
 	MapData::GetInstance().Load("./Resources/data/stage1.json");
-	ChangeScene(SceneType::Title);
+	ChangeScene(SceneType::GamePlay);
 }
 
 void SceneManager::Update(float dt, const char* keys, const char* pre) {
