@@ -142,8 +142,7 @@ void Player::Update(float deltaTime) {
 	//	drawComp_->StopAllEffects();
 	//}
 
-	// DrawComponent2D の位置を更新
-	drawComp_->SetTransform(transform_);
+	
 
 	// DrawComponent2D を更新（アニメーション・エフェクト）
 	drawComp_->Update(deltaTime);
@@ -151,7 +150,8 @@ void Player::Update(float deltaTime) {
 
 void Player::Draw(const Camera2D& camera) {
 	if (!info_.isActive) return;
-
+	// DrawComponent2D の位置を更新
+	drawComp_->SetPosition(transform_.translate);
 	// カメラを使って描画（ゲーム内オブジェクト）
 	drawComp_->Draw(camera);
 
