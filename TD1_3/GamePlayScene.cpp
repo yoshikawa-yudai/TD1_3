@@ -203,7 +203,7 @@ void GamePlayScene::Update(float dt, const char* keys, const char* pre) {
 	}
 
 	// GameObjectManager でオブジェクト更新（移動処理）
-	objectManager_.Update(dt);
+	//objectManager_.Update(dt);
 
 	// パーティクル
 	particleManager_->Update(dt);
@@ -233,7 +233,6 @@ void GamePlayScene::Draw() {
 		background->Draw(*camera_);
 	}
 
-
 	//========================
 	// マップ描画 
 	// =======================
@@ -243,8 +242,6 @@ void GamePlayScene::Draw() {
 	// 静的タイル描画
 	auto& mapData = MapData::GetInstance();
 	mapChip_.Draw(*camera_, mapData);
-
-
 
 	particleManager_->Draw(*camera_);
 
